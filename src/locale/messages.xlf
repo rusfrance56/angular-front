@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en-US" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="6162691442834560200" datatype="html">
+        <source>Items</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/item-list/item-list.component.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5674286808255988565" datatype="html">
+        <source>Create</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/item-list/item-list.component.html</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7711245667123213632" datatype="html">
+        <source>Item name</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/item-list/item-list.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7643498667907986818" datatype="html">
+        <source>Item description</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/item-list/item-list.component.html</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8614992698164275778" datatype="html">
+        <source>Item price</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/item-list/item-list.component.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3955967824702499842" datatype="html">
+        <source>Department</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/item-list/item-list.component.html</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+      <!-- <trans-unit id="4203291817648844201" datatype="html">
+        <source>edit</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/item-list/item-list.component.html</context>
+          <context context-type="linenumber">39,41</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4546667815838934993" datatype="html">
+        <source>delete</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/item-list/item-list.component.html</context>
+          <context context-type="linenumber">44,46</context>
+        </context-group>
+      </trans-unit> -->
+    </body>
+  </file>
+</xliff>
