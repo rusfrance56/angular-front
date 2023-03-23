@@ -11,14 +11,13 @@ export class ItemService {
   private baseURL = "http://localhost:8080/items";
 
   constructor(private httpClient: HttpClient) {
-
   }
 
-  getItemList(): Observable<Item[]> {
+  getList(): Observable<Item[]> {
     return this.httpClient.get<Item[]>(this.baseURL);
   }
 
-  save(item: Item): Observable<Item>  {
+  create(item: Item): Observable<Item>  {
     return this.httpClient.post<Item>(this.baseURL, item);
   }
 
@@ -26,7 +25,7 @@ export class ItemService {
     return this.httpClient.put<Item>(this.baseURL + '/' + item.id, item);
   }
 
-  getItemById(id: number): Observable<Item>  {
+  getById(id: number): Observable<Item>  {
     return this.httpClient.get<Item>(this.baseURL + '/' + id);
   }
 

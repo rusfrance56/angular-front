@@ -1,43 +1,121 @@
 <ng-container *transloco="let t;">
-<ul class="nav nav-pills">
-<!--  <ul class="navbar-nav">-->
-    <li class="nav-item">
-      <a routerLink="items" routerLinkActive="active" class="nav-link">{{t('ITEMS')}}</a>
-    </li>
-    <li class="nav-item">
-      <a routerLink="item" class="nav-link">{{t('ITEM_CREATE')}}</a>
-    </li>
-    <!--<li>
-      <button (click)="changeLanguage()">change lang</button>
-    </li>-->
-    <li class="nav-item dropdown">
-      <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
-         role="button" aria-expanded="false" (click)="changeLanguage('En')">{{([currentLang])}}</a>
-      <ul class="dropdown-menu">
-<!--        <li><a class="dropdown-item" href="#" (click)="changeLanguage('En')">En</a></li>-->
-<!--        <li><a class="dropdown-item" href="#" (click)="changeLanguage('Ru')">Ru</a></li>-->
-      </ul>
-    </li>
-<!--  </ul>-->
-</ul>
-<div class="container">
-<!--  <app-item-list></app-item-list>-->
+  <header>
+    <div class="px-3 py-2 bg-dark text-white">
+      <div>
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start col-md-12">
+          <a href="/" class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none">
+            <svg class="bi me-2" width="40" height="32" role="img" fill="currentColor">
+              <use xlink:href="assets/bootstrap-icons.svg#pen"></use>
+            </svg>
+          </a>
 
-  <router-outlet></router-outlet>
-  <p appStyle fontWeight="bold" fontColor="green">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti, mollitia.</p>
-  <app-post-form (onAdd)="updatePosts($event)">
+          <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
+            <li>
+              <a class="nav-link text-white">
+                <svg class="bi d-block mx-auto mb-1" width="24" height="24" fill="currentColor">
+                  <use xlink:href="assets/bootstrap-icons.svg#house"></use>
+                </svg>
+                Home
+              </a>
+            </li>
+            <li>
+              <a class="nav-link text-white">
+                <svg class="bi d-block mx-auto mb-1" width="24" height="24" fill="currentColor">
+                  <use xlink:href="assets/bootstrap-icons.svg#speedometer2"></use>
+                </svg>
+                Dashboard
+              </a>
+            </li>
+            <li>
+              <a class="nav-link text-white">
+                <svg class="bi d-block mx-auto mb-1" width="24" height="24" fill="currentColor">
+                  <use xlink:href="assets/bootstrap-icons.svg#table"></use>
+                </svg>
+                Orders
+              </a>
+            </li>
+            <li>
+              <a class="nav-link text-white" routerLink="items" routerLinkActive="active">
+                <svg class="bi d-block mx-auto mb-1" width="24" height="24" fill="currentColor">
+                  <use xlink:href="assets/bootstrap-icons.svg#grid"></use>
+                </svg>
+                {{t('ITEMS')}}
+              </a>
+            </li>
+            <li>
+              <a class="nav-link text-white" routerLink="item">
+                <svg class="bi d-block mx-auto mb-1" width="24" height="24" fill="currentColor">
+                  <use xlink:href="assets/bootstrap-icons.svg#database-add"></use>
+                </svg>
+                {{t('ITEM_CREATE')}}
+              </a>
+            </li>
+            <li>
+              <a class="nav-link text-white" routerLink="users">
+                <svg class="bi d-block mx-auto mb-1" width="24" height="24" fill="currentColor">
+                  <use xlink:href="assets/bootstrap-icons.svg#person-circle"></use>
+                </svg>
+                {{t('USERS')}}
+              </a>
+            </li>
+          </ul>
+          <div class="text-end">
+            <ul class="navbar-nav ml-auto" *ngIf="!isLoggedIn">
+              <li class="nav-item">
+                <a href="/register" class="nav-link" routerLink="register">Sign Up</a>
+              </li>
+              <li class="nav-item">
+                <a href="/login" class="nav-link" routerLink="login">Login</a>
+              </li>
+            </ul>
 
-  </app-post-form>
-  <br/>
-  <app-post *ngFor="let post of posts" [myPost]="post">
-
-  </app-post>
-
-</div>
-<footer class="footer">
+            <ul class="navbar-nav ml-auto" *ngIf="isLoggedIn">
+              <li class="nav-item">
+                <a href="/profile" class="nav-link" routerLink="profile">{{ username }}</a>
+              </li>
+              <li class="nav-item">
+<!--                <a href="#" class="nav-link" (click)="logout()">LogOut</a>-->
+                <button type="button" (click)="logout()">LogOut</button>
+              </li>
+            </ul>
+<!--            <div href= "/login" type="button" class="btn btn-outline-light me-2">Login</div>-->
+<!--            <div href= "/register" type="button" class="btn btn-warning">Register</div>-->
+            <ul class="navbar-nav">
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" id="dropdown08"
+                   aria-expanded="false" (click)="changeLanguage()">{{([currentLang])}}</a>
+                <ul class="dropdown-menu" aria-labelledby="dropdown08">
+                  <li><a class="dropdown-item" (click)="changeLanguage('En')">En</a></li>
+                  <li><a class="dropdown-item" (click)="changeLanguage('Ru')">Ru</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
   <div class="container">
-    <span>All rights reserved 2023 Rusfrance</span>
+    <!--  <app-item-list></app-item-list>-->
+
+    <router-outlet></router-outlet>
+
+
+    <!--<p appStyle fontWeight="bold" fontColor="green">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti,
+      mollitia.</p>
+    <app-post-form (onAdd)="updatePosts($event)">
+
+    </app-post-form>
+    <br/>
+    <app-post *ngFor="let post of posts" [myPost]="post">
+
+    </app-post>-->
+
   </div>
-</footer>
+  <footer class="footer">
+    <div class="container">
+      <span>All rights reserved 2023 Rusfrance</span>
+    </div>
+  </footer>
 </ng-container>
 

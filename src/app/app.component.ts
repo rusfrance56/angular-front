@@ -1,5 +1,9 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {TranslocoService} from "@ngneat/transloco";
+import {AuthService} from "./auth/auth.service";
+import {StorageService} from "./auth/storage.service";
+import {EventBusService} from "./auth/event-bus.service";
+import {Subscription} from "rxjs";
 
 export interface Post {
   title: string,
@@ -18,15 +22,22 @@ export enum Department {
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
 
   currentLang: string;
+  roles: string[] = [];
+  isLoggedIn = false;
+  username?: string;
+  eventBusSub?: Subscription;
 
-  constructor(private translocoService: TranslocoService) {
+  constructor(private translocoService: TranslocoService,
+              private authService: AuthService,
+              private storageService: StorageService,
+              private eventBusService: EventBusService) {
     this.currentLang = this.translocoService.getActiveLang();
   }
 
-  changeLanguage(lang: string) {
+  changeLanguage(lang?: string) {
     if (this.translocoService.getActiveLang().endsWith('en')) {
       this.translocoService.setActiveLang('ru');
     } else {
@@ -45,14 +56,32 @@ export class AppComponent {
     this.currentLang = this.translocoService.getActiveLang();
   }
 
-  posts: Post[] = [
-    {title: 'Post1', text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum, sequi?',
-      id: 1, date: Date.parse('2022-12-12')},
-    {title: 'Post2 ', text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur, deleniti.',
-      id: 2, date: Date.parse('2022-03-15')}
-  ];
+  ngOnInit(): void {
+    this.isLoggedIn = this.storageService.isLoggedIn();
 
-  updatePosts(post: Post) {
-    this.posts.unshift(post);
+    if (this.isLoggedIn) {
+      const user = this.storageService.getUser();
+      this.roles = user.roles;
+      // this.showAdminBoard = this.roles.includes('ROLE_ADMIN');
+      // this.showModeratorBoard = this.roles.includes('ROLE_MODERATOR');
+
+      this.username = user.userLogonName;
+    }
+
+    this.eventBusSub = this.eventBusService.on('logout', () => {
+      this.logout();
+    });
+  }
+
+  logout(): void {
+    this.authService.logout().subscribe({
+      next: () => {
+        this.storageService.clean();
+        window.location.reload();
+      },
+      error: err => {
+        console.log(err);
+      }
+    });
   }
 }

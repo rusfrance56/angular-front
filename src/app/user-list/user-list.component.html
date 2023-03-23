@@ -1,0 +1,70 @@
+<ng-container *transloco="let t;">
+  <h2>{{ t('USERS')}}</h2>
+  <div st-table="users" st-pipe="updateTable">
+    <div id="usersTable">
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th colspan="7"><input st-search="" class="form-control-sm col-lg-8" placeholder="{{t('SEARCH')}}" type="text"/></th>
+          <th></th>
+          <th>
+            <div class="btn-group-sm inline-row" role="group">
+              <button type="button" class="btn btn-primary" (click)="navigateToCreate()">{{t('CREATE')}}</button>
+            </div>
+          </th>
+        </tr>
+        <tr>
+          <th hidden>Id</th>
+          <th>#</th>
+          <th st-sort="name">{{t('NAME')}}</th>
+          <th st-sort="surname">{{t('SURNAME')}}</th>
+          <th st-sort="description">{{t('LOGON_NAME')}}</th>
+          <th st-sort="department">{{t('DEPARTMENT')}}</th>
+          <th st-sort="address">{{t('ADDRESS')}}</th>
+          <th st-sort="email">{{t('EMAIL')}}</th>
+          <th st-sort="phone">{{t('PHONE')}}</th>
+          <th>
+            <select class="form-control-sm" id="usersByPageDropDown"
+                    ng-options="opt for opt in pagination.availableOptions" ng-model="pagination.usersPerPage">
+            </select>
+          </th>
+        </tr>
+        </thead>
+        <tbody ng-show="!isLoading">
+        <tr *ngFor="let user of users; let i = index">
+          <td hidden>{{user.id}}</td>
+          <!--        <td>{{pagination.from+$index+1}}</td>-->
+          <td>{{i+1}}</td>
+          <td>{{user.name}}</td>
+          <td>{{user.surname}}</td>
+          <td>{{user.logonName}}</td>
+          <td>{{t(user.department)}}</td>
+          <td>{{user.address}}</td>
+          <td>{{user.email}}</td>
+          <td>{{user.phone}}</td>
+          <td class="col-md-2">
+            <button class="btn btn-primary" (click)="navigateToEdit(user.id ?? 0)">
+              <svg class="bi" width="16" height="16" fill="currentColor">
+                <use xlink:href="assets/bootstrap-icons.svg#pencil-square"/>
+              </svg>
+            </button>
+            <!--          todo не будет работать удаление, так как на беке требует права записи для этого-->
+            <button class="btn btn-danger" (click)="deleteUser(user.id ?? 0)">
+              <svg class="bi" width="16" height="16" fill="currentColor">
+                <use xlink:href="assets/bootstrap-icons.svg#bucket"/>
+              </svg>
+            </button>
+          </td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+          <td colspan="7" class="text-center">
+            <div st-pagination="" st-items-by-page="pagination.usersPerPage"></div>
+          </td>
+        </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</ng-container>
