@@ -65,7 +65,7 @@ export class AppComponent implements OnInit{
       // this.showAdminBoard = this.roles.includes('ROLE_ADMIN');
       // this.showModeratorBoard = this.roles.includes('ROLE_MODERATOR');
 
-      this.username = user.userLogonName;
+      this.username = user.username;
     }
 
     this.eventBusSub = this.eventBusService.on('logout', () => {

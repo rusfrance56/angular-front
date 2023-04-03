@@ -8,7 +8,7 @@
   "LANG": "Language",
   "USER": "User",
   "DATE": "Date",
-  "LOGON_NAME": "Logon name",
+  "USER_NAME": "Username",
   "PASSWORD": "Password",
   "NAME": "Name",
   "SURNAME": "Surname",
@@ -23,7 +23,7 @@
   "INFO": "Info",
   "DELETE": "Delete",
   "SAVE": "Save",
-  "ENTER_LOGON_NAME": "Enter a logon name",
+  "ENTER_USER_NAME": "Enter a username",
   "ENTER_PASSWORD": "Enter a password",
   "ENTER_NAME": "Enter the name",
   "ENTER_NAME_ORDER": "Enter the order name",
@@ -77,5 +77,6 @@
   "item.price.required": "Price is required",
   "item.price.pattern": "Price is invalid",
   "item.description.maxlength": "Max description length is {{requiredLength}}",
+  "NAME_IS_REQ": "Name is required",
   "SURNAME_IS_REQ": "Surname is required"
 }

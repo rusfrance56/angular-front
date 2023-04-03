@@ -1,1 +1,33 @@
-<p>profile works!</p>
+<ng-container *transloco="let t;">
+  <div class="container col-md-6 card">
+    <h2>{{t('USER_INFO')}}</h2>
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+      <div class="form-floating mb-3 ">
+        <input type="text" class="form-control" id="userName" name="userName" formControlName="name"
+               [ngClass]="{ 'is-invalid': submitted && f['name'].errors }">
+        <label for="userName" [ngClass]="{ 'invalid-feedback': submitted && f['name'].errors }">
+          {{t('NAME')}}*
+        </label>
+        <div *ngIf="submitted && f['name'].errors" class="invalid-feedback">
+          <div *ngIf="f['name'].errors['required']">{{t('NAME_IS_REQ')}}</div>
+        </div>
+      </div>
+      <div class="form-floating mb-3 ">
+        <input type="text" class="form-control" id="userSurName" name="userSurName" formControlName="surname"
+               [ngClass]="{ 'is-invalid': submitted && f['surname'].errors }">
+        <label for="userName" [ngClass]="{ 'invalid-feedback': submitted && f['surname'].errors }">
+          {{t('SURNAME')}}*
+        </label>
+        <div *ngIf="submitted && f['surname'].errors" class="invalid-feedback">
+          <div *ngIf="f['surname'].errors['required']">{{t('SURNAME_IS_REQ')}}</div>
+        </div>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="userDepartment" name="userDepartment" formControlName="department"
+               [ngClass]="{ 'is-invalid': submitted && f['department'].errors }">
+        <label for="userDepartment">{{t('DEPARTMENT')}}</label>
+      </div>
+      <button class="btn btn-success" type="submit">{{t('SAVE')}}</button>
+    </form>
+  </div>
+</ng-container>

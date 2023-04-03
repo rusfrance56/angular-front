@@ -58,28 +58,27 @@
                 {{t('USERS')}}
               </a>
             </li>
+            <div *ngIf="!isLoggedIn" style="margin: auto">
+              <li class="nav-item">
+                <a href="/register" class="nav-link text-white" routerLink="register">Sign Up</a>
+              </li>
+              <li class="nav-item">
+                <a href="/login" class="nav-link text-white" routerLink="login">Login</a>
+              </li>
+            </div>
+            <div *ngIf="isLoggedIn" style="margin: auto">
+              <li ngbDropdown class="nav-item">
+                <a href (click)="false" class="nav-link text-white" ngbDropdownToggle>{{username}}</a>
+                <div ngbDropdownMenu>
+                  <button ngbDropdownItem href="/profile" routerLink="profile">Profile</button>
+                  <button ngbDropdownItem (click)="changeLanguage()">Change language ({{([currentLang])}})</button>
+                  <div class="dropdown-divider"></div>
+                  <button ngbDropdownItem (click)="logout()">LogOut</button>
+                </div>
+              </li>
+            </div>
           </ul>
-          <div class="text-end">
-            <ul class="navbar-nav ml-auto" *ngIf="!isLoggedIn">
-              <li class="nav-item">
-                <a href="/register" class="nav-link" routerLink="register">Sign Up</a>
-              </li>
-              <li class="nav-item">
-                <a href="/login" class="nav-link" routerLink="login">Login</a>
-              </li>
-            </ul>
-
-            <ul class="navbar-nav ml-auto" *ngIf="isLoggedIn">
-              <li class="nav-item">
-                <a href="/profile" class="nav-link" routerLink="profile">{{ username }}</a>
-              </li>
-              <li class="nav-item">
-<!--                <a href="#" class="nav-link" (click)="logout()">LogOut</a>-->
-                <button type="button" (click)="logout()">LogOut</button>
-              </li>
-            </ul>
-<!--            <div href= "/login" type="button" class="btn btn-outline-light me-2">Login</div>-->
-<!--            <div href= "/register" type="button" class="btn btn-warning">Register</div>-->
+          <!--<div class="text-end" style="margin-left: 30px">
             <ul class="navbar-nav">
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" id="dropdown08"
@@ -90,7 +89,7 @@
                 </ul>
               </li>
             </ul>
-          </div>
+          </div>-->
         </div>
       </div>
     </div>

@@ -2,27 +2,77 @@
   <div class="container col-md-6 card">
     <h2>{{t('USER_INFO')}}</h2>
     <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
-      <div class="form-floating mb-3 ">
-        <input type="text" class="form-control" id="userName" name="userName" formControlName="name"
-               [ngClass]="{ 'is-invalid': submitted && f['name'].errors }">
-        <label for="userName" [ngClass]="{ 'invalid-feedback': submitted && f['name'].errors }">
+      <div class="form-floating mb-1">
+        <input type="text" class="form-control" id="name" name="name" formControlName="name"
+               [ngClass]="{ 'is-invalid': isFieldInvalid('name') }">
+        <label for="name" [ngClass]="{ 'invalid-feedback': isFieldInvalid('name') }">
           {{t('NAME')}}*
         </label>
-        <div *ngIf="submitted && f['name'].errors" class="invalid-feedback">
-          <div *ngIf="f['name'].errors['required']">{{t('NAME_IS_REQ')}}</div>
+        <div *ngIf="isFieldInvalid('name')" class="invalid-feedback">
+          <div *ngIf="isFieldInvalid('name')">{{ getErrorMessage('name') }}</div>
         </div>
       </div>
-      <div class="form-floating mb-3 ">
-        <input type="text" class="form-control" id="userSurName" name="userSurName" formControlName="surname"
-               [ngClass]="{ 'is-invalid': submitted && f['surname'].errors }">
-        <label for="userName" [ngClass]="{ 'invalid-feedback': submitted && f['surname'].errors }">
-          {{t('SURNAME')}}*
+      <div class="form-floating mb-1">
+        <input type="text" class="form-control" id="surname" name="surname" formControlName="surname"
+               [ngClass]="{ 'is-invalid': isFieldInvalid('surname') }">
+        <label for="surname" [ngClass]="{ 'invalid-feedback': isFieldInvalid('surname') }">
+          {{t('SURNAME')}}
         </label>
-        <div *ngIf="submitted && f['surname'].errors" class="invalid-feedback">
-          <div *ngIf="f['surname'].errors['required']">{{t('SURNAME_IS_REQ')}}</div>
+        <div *ngIf="isFieldInvalid('surname')" class="invalid-feedback">
+          <div *ngIf="isFieldInvalid('surname')">{{ getErrorMessage('surname') }}</div>
         </div>
       </div>
-      <div class="form-floating mb-3">
+      <div class="form-floating mb-1">
+        <input type="text" class="form-control" id="userName" name="userName" formControlName="userName"
+               [ngClass]="{ 'is-invalid': isFieldInvalid('userName') }">
+        <label for="userName" [ngClass]="{ 'invalid-feedback': isFieldInvalid('userName') }">
+          {{t('USER_NAME')}}*
+        </label>
+        <div *ngIf="isFieldInvalid('userName')" class="invalid-feedback">
+          <div *ngIf="isFieldInvalid('userName')">{{ getErrorMessage('userName') }}</div>
+        </div>
+      </div>
+      <div *ngIf="isAddMode" class="form-floating mb-1" >
+        <input type="password" class="form-control" id="password" name="password" formControlName="password"
+               [ngClass]="{ 'is-invalid': isFieldInvalid('password') }">
+        <label for="password" [ngClass]="{ 'invalid-feedback': isFieldInvalid('password') }">
+          {{t('PASSWORD')}}*
+        </label>
+        <div *ngIf="isFieldInvalid('password')" class="invalid-feedback">
+          <div *ngIf="isFieldInvalid('password')">{{ getErrorMessage('password') }}</div>
+        </div>
+      </div>
+      <div class="form-floating mb-1">
+        <input type="text" class="form-control" id="address" name="address" formControlName="address"
+               [ngClass]="{ 'is-invalid': isFieldInvalid('address') }">
+        <label for="address" [ngClass]="{ 'invalid-feedback': isFieldInvalid('address') }">
+          {{t('ADDRESS')}}
+        </label>
+        <div *ngIf="isFieldInvalid('address')" class="invalid-feedback">
+          <div *ngIf="isFieldInvalid('address')">{{ getErrorMessage('address') }}</div>
+        </div>
+      </div>
+      <div class="form-floating mb-1">
+        <input type="text" class="form-control" id="email" name="email" formControlName="email"
+               [ngClass]="{ 'is-invalid': isFieldInvalid('email') }">
+        <label for="email" [ngClass]="{ 'invalid-feedback': isFieldInvalid('email') }">
+          {{t('EMAIL')}}*
+        </label>
+        <div *ngIf="isFieldInvalid('email')" class="invalid-feedback">
+          <div *ngIf="isFieldInvalid('email')">{{ getErrorMessage('email') }}</div>
+        </div>
+      </div>
+      <div class="form-floating mb-1">
+        <input type="text" class="form-control" id="phone" name="phone" formControlName="phone"
+               [ngClass]="{ 'is-invalid': isFieldInvalid('phone') }">
+        <label for="phone" [ngClass]="{ 'invalid-feedback': isFieldInvalid('phone') }">
+          {{t('PHONE')}}
+        </label>
+        <div *ngIf="isFieldInvalid('phone')" class="invalid-feedback">
+          <div *ngIf="isFieldInvalid('phone')">{{ getErrorMessage('phone') }}</div>
+        </div>
+      </div>
+      <div class="form-floating mb-1">
         <select class="form-control" id="userDepartment" formControlName="department" >
           <option *ngFor="let department of departments;">
             {{department}}

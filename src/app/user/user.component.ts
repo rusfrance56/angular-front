@@ -1,10 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Department} from "../app.component";
 import {first} from "rxjs";
 import {User} from "./user";
 import {UserService} from "./user.service";
+import {ValidationService} from "../validation/validation.service";
 
 @Component({
   selector: 'app-user',
@@ -22,7 +23,8 @@ export class UserComponent implements OnInit{
   constructor(private router: Router,
               private activatedRouter: ActivatedRoute,
               private formBuilder: FormBuilder,
-              private userService: UserService) {
+              private userService: UserService,
+              private validationService: ValidationService) {
     this.user = new User();
     this.departments = Object.keys(Department);
   }
@@ -36,25 +38,25 @@ export class UserComponent implements OnInit{
       name: ['', [
         Validators.required
       ]],
-      surname: ['', [Validators.required]],
-      logonName: ['', [Validators.required]],
-      department: [Department.OFFICE, [
-        Validators.required
-      ]],
+      surname: [''],
+      userName: ['', [Validators.required]],
+      department: [Department.OFFICE],
       address: [''],
       email: [''],
-      phone: ['']
+      phone: [''],
+      status: ['']
     });
 
     if (!this.isAddMode) {
       this.userService.getById(id)
         .pipe(first())
         .subscribe(x => this.userForm.patchValue(x));
+    } else {
+      this.userForm.addControl('password', new FormControl('', Validators.required));
     }
   }
 
   onSubmit() {
-    console.log(this.userForm);
     this.submitted = true;
     if (this.userForm.invalid) {
       return;
@@ -99,7 +101,11 @@ export class UserComponent implements OnInit{
     this.userForm.reset();
   }
 
-  get f(): { [key: string]: AbstractControl } {
-    return this.userForm.controls;
+  isFieldInvalid(field: string): boolean {
+    return this.submitted && this.validationService.isFieldInvalid(this.userForm, field);
+  }
+
+  getErrorMessage(field: string): string {
+    return this.validationService.getErrorMessage(this.userForm, field, 'user');
   }
 }

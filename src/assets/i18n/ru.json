@@ -8,7 +8,7 @@
   "LANG": "Язык",
   "USER": "Работник",
   "DATE": "Дата и время",
-  "LOGON_NAME": "Логин",
+  "USER_NAME": "Логин",
   "PASSWORD": "Пароль",
   "NAME": "Имя",
   "SURNAME": "Фамилия",
@@ -23,7 +23,7 @@
   "INFO": "Инфо",
   "DELETE": "Удалить",
   "SAVE": "Сохранить",
-  "ENTER_LOGON_NAME": "Введите логин",
+  "ENTER_USER_NAME": "Введите логин",
   "ENTER_PASSWORD": "Введите пароль",
   "ENTER_NAME": "Введите имя",
   "ENTER_NAME_ORDER": "Введите название",
@@ -77,5 +77,6 @@
   "item.price.required": "Цена не может быть пустой",
   "item.price.pattern": "Цена некорректна",
   "item.description.maxlength": "Максимальная длина описания {{requiredLength}}",
+  "NAME_IS_REQ": "Поле имя не может быть пустым",
   "SURNAME_IS_REQ": "Поле фамилия не может быть пустым"
 }

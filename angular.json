@@ -4,12 +4,6 @@
   "newProjectRoot": "projects",
   "projects": {
     "angular-basics": {
-      "i18n": {
-        "sourceLocale": "en-US",
-        "locales": {
-          "ru": "src/locale/messages.ru.xlf"
-        }
-      },
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -19,7 +13,6 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "localize": ["ru"],
             "outputPath": "dist/angular-basics",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -32,6 +25,7 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.css"
             ],
             "scripts": []

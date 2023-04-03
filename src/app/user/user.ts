@@ -2,7 +2,7 @@ import {Department} from "../app.component";
 
 export class User {
   id?: number | undefined;
-  logonName: string;
+  userName: string;
   name: string;
   surname: string;
   department: Department;
@@ -13,7 +13,7 @@ export class User {
   // orders: List<CustomerOrderResponseTO>
 
   constructor() {
-    this.logonName = '';
+    this.userName = '';
     this.name = '';
     this.surname = '';
     this.department = Department.OFFICE;

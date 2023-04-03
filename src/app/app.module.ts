@@ -18,6 +18,7 @@ import {RegisterComponent} from './auth/register/register.component';
 import {LoginComponent} from './auth/login/login.component';
 import {ProfileComponent} from './auth/profile/profile.component';
 import {AuthInterceptor} from "./auth/auth.interceptor";
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import {AuthInterceptor} from "./auth/auth.interceptor";
     HttpClientModule,
     AppRoutingModule,
     TranslocoRootModule,
-    MatTableModule
+    MatTableModule,
+    NgbModule
   ],
   providers: [
     {
