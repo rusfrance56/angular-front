@@ -61,7 +61,7 @@ export class AuthInterceptor implements HttpInterceptor {
           user.token = data.accessToken;
           user.refreshToken = data.refreshToken;
           this.storageService.saveUser(user);
-          return this.addTokenToRequest(request);
+          return this.addTokenToRequestIfExists(request);
         }),
         mergeMap((req) => next.handle(req)),
         catchError((error) => {
@@ -70,8 +70,12 @@ export class AuthInterceptor implements HttpInterceptor {
             // this.eventBusService.emit(new EventData('logout', null));
             this.storageService.clean();
             window.location.reload();
-            //todo возможно тут выкинуть ошибку на экран?
           }/* else if (error instanceof HttpErrorResponse
+            && (request.url.includes('auth/signout')) && (error.status === 403 || error.status === 500)) {
+            this.storageService.clean();
+            window.location.reload();
+          }*/
+          /* else if (error instanceof HttpErrorResponse
             && !request.url.includes('auth/signin') && error.status === 401) {
             return this.handle401Error(request, next);
           }*/
@@ -79,12 +83,12 @@ export class AuthInterceptor implements HttpInterceptor {
         })
       );
     } else {
-      request = this.addTokenToRequest(request);
+      request = this.addTokenToRequestIfExists(request);
       return next.handle(request);
     }
   }
 
-  private addTokenToRequest(request: HttpRequest<any>): HttpRequest<any> {
+  private addTokenToRequestIfExists(request: HttpRequest<any>): HttpRequest<any> {
     const user = this.storageService.getUser();
     if (user) {
       const token = user.token;

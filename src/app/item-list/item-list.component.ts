@@ -4,6 +4,7 @@ import {Item} from "../item/item";
 import {Router} from "@angular/router";
 import {TranslocoService} from "@ngneat/transloco";
 import {MatTableDataSource} from "@angular/material/table";
+import {sortData} from "../app.component";
 
 @Component({
   selector: 'app-item-list',
@@ -29,7 +30,7 @@ export class ItemListComponent implements OnInit{
 
   private getItems() {
     this.itemService.getList().subscribe(data => {
-      this.items = data;
+      this.items = sortData(data);
     });
   }
 

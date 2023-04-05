@@ -3,7 +3,10 @@ import {StorageService} from "../storage.service";
 import {UserService} from "../../user/user.service";
 import {User} from "../../user/user";
 import {first} from "rxjs";
-import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {ValidationService} from "../../validation/validation.service";
+import {Department} from "../../app.component";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-profile',
@@ -14,11 +17,16 @@ export class ProfileComponent implements OnInit{
   submitted = false;
   loading = false;
   userForm!: FormGroup;
+  departments;
 
-  constructor(private storageService: StorageService,
+  constructor(private router: Router,
+              private activatedRouter: ActivatedRoute,
+              private storageService: StorageService,
               private formBuilder: FormBuilder,
-              private userService: UserService) {
+              private userService: UserService,
+              private validationService: ValidationService) {
     this.currentUser = new User();
+    this.departments = Object.keys(Department);
   }
 
   ngOnInit(): void {
@@ -30,8 +38,8 @@ export class ProfileComponent implements OnInit{
         Validators.required
       ]],
       surname: ['', [Validators.required]],
-      userName: new FormControl({value: '', disabled: true}, Validators.required),
-      department: new FormControl({value: null, disabled: true}, Validators.required),
+      userName: new FormControl({value: '', disabled: false}, Validators.required),
+      department: new FormControl({value: Department.OFFICE, disabled: false}, Validators.required),
       address: [''],
       email: [''],
       phone: ['']
@@ -44,7 +52,6 @@ export class ProfileComponent implements OnInit{
   }
 
   onSubmit() {
-    console.log(this.userForm);
     this.submitted = true;
     if (this.userForm.invalid) {
       return;
@@ -59,12 +66,20 @@ export class ProfileComponent implements OnInit{
       .pipe(first())
       .subscribe(() => {
         // this.alertService.success('User added', { keepAfterRouteChange: true });
-        // this.goToUserList();
+        this.goToUserList();
       })
       .add(() => this.loading = false);
   }
 
-  get f(): { [key: string]: AbstractControl } {
-    return this.userForm.controls;
+  isFieldInvalid(field: string): boolean {
+    return this.submitted && this.validationService.isFieldInvalid(this.userForm, field);
+  }
+
+  getErrorMessage(field: string): string {
+    return this.validationService.getErrorMessage(this.userForm, field, 'user');
+  }
+
+  private goToUserList() {
+    this.router.navigate(['/users'], { relativeTo: this.activatedRouter });
   }
 }

@@ -7,6 +7,7 @@ export class Item{
   imageUrls: string[];
   department: Department;
   price: number
+  updated: Date
 
   constructor() {
     this.name = '';
@@ -14,5 +15,6 @@ export class Item{
     this.imageUrls = [];
     this.department = Department.OFFICE;
     this.price = 0;
+    this.updated = new Date();
   }
 }

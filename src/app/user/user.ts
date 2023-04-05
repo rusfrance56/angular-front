@@ -9,6 +9,7 @@ export class User {
   address: string;
   email: string;
   phone: string;
+  updated: Date;
   // task: List<TaskTO>
   // orders: List<CustomerOrderResponseTO>
 
@@ -20,5 +21,6 @@ export class User {
     this.address = '';
     this.email = '';
     this.phone = '';
+    this.updated = new Date();
   }
 }

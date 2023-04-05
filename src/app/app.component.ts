@@ -16,6 +16,11 @@ export enum Department {
   STORAGE = "STORAGE",
   OFFICE = "OFFICE"
 }
+export function sortData(data: any[]): any[] {
+  return data.sort((a, b) => {
+    return <any>new Date(b.updated) - <any>new Date(a.updated);
+  });
+}
 
 @Component({
   selector: 'app-root',
@@ -84,4 +89,6 @@ export class AppComponent implements OnInit{
       }
     });
   }
+
+
 }

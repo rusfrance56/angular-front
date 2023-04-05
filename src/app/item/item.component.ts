@@ -38,7 +38,7 @@ export class ItemComponent implements OnInit{
       name: ['', [
         Validators.required
       ]],
-      description: ['', Validators.maxLength(30)],
+      description: ['', Validators.maxLength(100)],
       department: [Department.OFFICE, [
         Validators.required
       ]],

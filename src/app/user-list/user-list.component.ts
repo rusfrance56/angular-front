@@ -4,6 +4,7 @@ import {TranslocoService} from "@ngneat/transloco";
 import {MatTableDataSource} from "@angular/material/table";
 import {UserService} from "../user/user.service";
 import {User} from "../user/user";
+import {sortData} from "../app.component";
 
 @Component({
   selector: 'app-user-list',
@@ -28,7 +29,7 @@ export class UserListComponent implements OnInit{
 
   private getUsers() {
     this.userService.getList().subscribe(data => {
-      this.users = data;
+      this.users = sortData(data);
     });
   }
 
