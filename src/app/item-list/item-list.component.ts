@@ -3,8 +3,6 @@ import {ItemService} from "../item/item.service";
 import {Item} from "../item/item";
 import {Router} from "@angular/router";
 import {TranslocoService} from "@ngneat/transloco";
-import {MatTableDataSource} from "@angular/material/table";
-import {sortData} from "../app.component";
 
 @Component({
   selector: 'app-item-list',
@@ -14,29 +12,44 @@ import {sortData} from "../app.component";
 export class ItemListComponent implements OnInit{
 
   items: Item[];
-  columnsToDisplay = ['name'];
-  dataSource;
+
+  filter = {
+    department: '',
+    price: null
+  }
+  sortField = "updated";
+  page = 1;
+  count = 0;
+  pageSize = 9;
+  pageSizes = [3, 6, 9];
 
   constructor(private itemService: ItemService,
               private router: Router,
               private translocoService: TranslocoService) {
     this.items = [];
-    this.dataSource = new MatTableDataSource(this.items);
   }
 
   ngOnInit(): void {
-    this.getItems();
+    this.getItemsPageWithFilter();
   }
 
   private getItems() {
     this.itemService.getList().subscribe(data => {
-      this.items = sortData(data);
+      this.items = data;
+    });
+  }
+
+  getItemsPageWithFilter() {
+    let requestParams = this.getRequestParams();
+    this.itemService.findPageByFilter(requestParams).subscribe(data => {
+      this.count = data.totalElements;
+      this.items = data.content;
     });
   }
 
   deleteItem(id: number) {
     this.itemService.delete(id).subscribe(() => {
-      this.getItems();
+      this.getItemsPageWithFilter();
     });
   }
 
@@ -45,5 +58,40 @@ export class ItemListComponent implements OnInit{
   }
   navigateToCreate() {
     this.router.navigate(['/item']);
+  }
+
+  private getRequestParams(): any {
+    let params: any = {};
+    let direction: string = "DESC";
+
+    if (this.filter.department) {
+      params[`department`] = this.filter.department.toUpperCase();
+    }
+    if (this.filter.price) {
+      params[`price`] = this.filter.price;
+    }
+    if (this.sortField) {
+      params[`sort`] = this.sortField;
+    }
+    if (this.page) {
+      params[`page`] = this.page - 1;
+    }
+    if (this.pageSize) {
+      params[`size`] = this.pageSize;
+    }
+    if (direction) {
+      params[`dir`] = direction;
+    }
+    return params;
+  }
+
+  handlePageChange(event: number): void {
+    this.page = event;
+    this.getItemsPageWithFilter();
+  }
+
+  setFirstPageAndLoad(): void {
+    this.page = 1;
+    this.getItemsPageWithFilter();
   }
 }

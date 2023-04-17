@@ -32,4 +32,8 @@ export class ItemService {
   delete(id: number): Observable<Item>  {
     return this.httpClient.delete<Item>(this.baseURL + '/' + id);
   }
+
+  findPageByFilter(params: any): Observable<any> {
+    return this.httpClient.get<any>(this.baseURL + "/paginationWithFilter", { params });
+  }
 }

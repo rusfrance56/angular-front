@@ -71,6 +71,10 @@
   "COMPLETE": "Finished",
   "USERS_NOT_FOUND": "Users not found! {{value1}}",
   "ADD": "Add",
+  "TASK_LIST": "Task List",
+  "ITEMS_PER_PAGE": "Items per page: ",
+  "PREV": "Prev",
+  "NEXT": "Next",
 
   "--VALIDATIONS AND EXCEPTIONS--": "",
   "item.name.required": "Name is required",

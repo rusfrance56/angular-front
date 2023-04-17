@@ -1,0 +1,79 @@
+<ng-container *transloco="let t;">
+  <div class="container col-md-6 card">
+    <h2>{{t('TASK_INFO')}}</h2>
+    <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+      <div class="form-floating mb-1">
+        <input type="text" class="form-control" id="name" name="name" formControlName="name"
+               [ngClass]="{ 'is-invalid': isFieldInvalid('name') }">
+        <label for="name" [ngClass]="{ 'invalid-feedback': isFieldInvalid('name') }">
+          {{t('NAME')}}*
+        </label>
+        <div *ngIf="isFieldInvalid('name')" class="invalid-feedback">
+          <div *ngIf="isFieldInvalid('name')">{{ getErrorMessage('name') }}</div>
+        </div>
+      </div>
+      <div class="form-floating mb-1">
+        <input type="text" class="form-control" id="description" name="description" formControlName="description"
+               [ngClass]="{ 'is-invalid': isFieldInvalid('description') }">
+        <label for="description" [ngClass]="{ 'invalid-feedback': isFieldInvalid('description') }">
+          {{t('DESCRIPTION')}}
+        </label>
+        <div *ngIf="isFieldInvalid('description')" class="invalid-feedback">
+          <div *ngIf="isFieldInvalid('description')">{{ getErrorMessage('description') }}</div>
+        </div>
+      </div>
+      <div class="form-floating mb-1">
+        <input type="datetime-local" class="form-control" id="dueDate" name="dueDate" formControlName="dueDate"
+               [ngClass]="{ 'is-invalid': isFieldInvalid('dueDate') }">
+        <label for="dueDate" [ngClass]="{ 'invalid-feedback': isFieldInvalid('dueDate') }">
+          {{t('DUE_DATE')}}
+        </label>
+        <div *ngIf="isFieldInvalid('dueDate')" class="invalid-feedback">
+          <div *ngIf="isFieldInvalid('dueDate')">{{ getErrorMessage('dueDate') }}</div>
+        </div>
+      </div>
+      <div class="form-floating mb-1">
+        <select class="form-control" id="priority" formControlName="priority">
+          <option *ngFor="let priority of priorities;" [ngValue] = "priority">
+            {{t(priority)}}
+          </option>
+        </select>
+        <label for="priority">{{t('PRIORITY')}}</label>
+      </div>
+      <div class="form-floating mb-1">
+        <select class="form-control" id="status" formControlName="status">
+          <option *ngFor="let status of statuses;" [ngValue] = "status">
+            {{t(status)}}
+          </option>
+        </select>
+        <label for="status">{{t('STATUS')}}</label>
+      </div>
+      <div class="form-floating mb-1">
+        <select class="form-control" id="department" formControlName="department"
+                (change)="onChangeDepartment()">
+          <option *ngFor="let department of departments;" [ngValue] = "department">
+            {{t(department)}}
+          </option>
+        </select>
+        <label for="department">{{t('DEPARTMENT')}}</label>
+      </div>
+      <div class="form-floating mb-1">
+        <select class="form-control" id="user"  formControlName="userId">
+          <option *ngFor="let user of users;" [ngValue] = "user.id">
+            {{user.surname + ' ' + user.name}}
+          </option>
+        </select>
+        <label for="user">{{t('USER')}}</label>
+      </div>
+      <div class="form-floating mb-1">
+        <select class="form-control" id="item" [compareWith]="compareAny" formControlName="item">
+          <option *ngFor="let item of items;" [ngValue] = "item">
+            {{item.name + ' (' + item.description + ')'}}
+          </option>
+        </select>
+        <label for="item">{{t('ITEM')}}</label>
+      </div>
+      <button class="btn btn-success" type="submit">{{t('SAVE')}}</button>
+    </form>
+  </div>
+</ng-container>

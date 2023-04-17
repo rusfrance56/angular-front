@@ -19,11 +19,11 @@
               </a>
             </li>
             <li>
-              <a class="nav-link text-white">
+              <a class="nav-link text-white" routerLink="tasks">
                 <svg class="bi d-block mx-auto mb-1" width="24" height="24" fill="currentColor">
                   <use xlink:href="assets/bootstrap-icons.svg#speedometer2"></use>
                 </svg>
-                Dashboard
+                {{t('TASK_LIST')}}
               </a>
             </li>
             <li>
@@ -40,14 +40,6 @@
                   <use xlink:href="assets/bootstrap-icons.svg#grid"></use>
                 </svg>
                 {{t('ITEMS')}}
-              </a>
-            </li>
-            <li>
-              <a class="nav-link text-white" routerLink="item">
-                <svg class="bi d-block mx-auto mb-1" width="24" height="24" fill="currentColor">
-                  <use xlink:href="assets/bootstrap-icons.svg#database-add"></use>
-                </svg>
-                {{t('ITEM_CREATE')}}
               </a>
             </li>
             <li>

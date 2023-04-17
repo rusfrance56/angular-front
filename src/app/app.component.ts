@@ -16,6 +16,15 @@ export enum Department {
   STORAGE = "STORAGE",
   OFFICE = "OFFICE"
 }
+export enum TaskStatus {
+  NEW= "NEW",
+  DEPLOYED = "DEPLOYED",
+  FINISHED = "FINISHED"
+}
+export enum TaskPriority {
+  HIGH = "HIGH",
+  LOW = 'LOW'
+}
 export function sortData(data: any[]): any[] {
   return data.sort((a, b) => {
     return <any>new Date(b.updated) - <any>new Date(a.updated);
@@ -84,11 +93,10 @@ export class AppComponent implements OnInit{
         this.storageService.clean();
         window.location.reload();
       },
-      error: err => {
-        console.log(err);
+      error: () => {
+        this.storageService.clean();
+        window.location.reload();
       }
     });
   }
-
-
 }

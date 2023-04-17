@@ -71,6 +71,10 @@
   "COMPLETE": "Завершена",
   "USERS_NOT_FOUND": "Работники не найдены! {{value1}}",
   "ADD": "Добавить",
+  "TASK_LIST": "Список задач",
+  "ITEMS_PER_PAGE": "Отображать по: ",
+  "PREV": "Пред",
+  "NEXT": "След",
 
   "--VALIDATIONS AND EXCEPTIONS--": "",
   "item.name.required": "Название не может быть пустым",

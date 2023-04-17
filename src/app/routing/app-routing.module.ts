@@ -7,6 +7,8 @@ import {UserListComponent} from "../user-list/user-list.component";
 import {ProfileComponent} from "../auth/profile/profile.component";
 import {RegisterComponent} from "../auth/register/register.component";
 import {LoginComponent} from "../auth/login/login.component";
+import {TaskListComponent} from "../task-list/task-list.component";
+import {TaskComponent} from "../task/task.component";
 
 const routes: Routes = [
 
@@ -21,6 +23,10 @@ const routes: Routes = [
   {path: 'users', component: UserListComponent},
   {path: 'user', component: UserComponent},
   {path: 'user/:id', component: UserComponent},
+
+  {path: 'tasks', component: TaskListComponent},
+  {path: 'task', component: TaskComponent},
+  {path: 'task/:id', component: TaskComponent},
 
   {path: '', redirectTo: 'items', pathMatch: "full"},
 ];

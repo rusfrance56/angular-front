@@ -10,7 +10,7 @@ import {
 import {catchError, mergeMap, Observable, throwError} from "rxjs";
 import {AuthService} from "./auth.service";
 import {StorageService} from "./storage.service";
-import {EventBusService} from "./event-bus.service";
+import {EventBusService, EventData} from "./event-bus.service";
 import {map} from "rxjs/operators";
 
 @Injectable({
@@ -37,20 +37,9 @@ export class AuthInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (request.url.includes('auth/signin')
       || request.url.includes('auth/signup')
-      || request.url.includes('auth/signout')
-      || request.url.includes('auth/refreshtoken')) {
-      return next.handle(request)
-        .pipe(
-        catchError((error) => {
-          if (error instanceof HttpErrorResponse
-            && (request.url.includes('auth/signout')) /* || request.url.includes('auth/refreshtoken')*/
-            && (error.status === 403 || error.status === 500)) {
-            this.storageService.clean();
-            window.location.reload();
-          }
-          return throwError(() => error);
-        })
-      );
+      || request.url.includes('auth/refreshtoken')
+    ) {
+      return next.handle(request);
     }
     const user = this.storageService.getUser();
 
@@ -66,15 +55,12 @@ export class AuthInterceptor implements HttpInterceptor {
         mergeMap((req) => next.handle(req)),
         catchError((error) => {
           if (error instanceof HttpErrorResponse
-            && !request.url.includes('auth/refreshtoken') && error.status === 403) {
-            // this.eventBusService.emit(new EventData('logout', null));
-            this.storageService.clean();
-            window.location.reload();
-          }/* else if (error instanceof HttpErrorResponse
-            && (request.url.includes('auth/signout')) && (error.status === 403 || error.status === 500)) {
-            this.storageService.clean();
-            window.location.reload();
-          }*/
+            && !request.url.includes('auth/refreshtoken')
+            && !request.url.includes('auth/signout')
+            && error.status === 403
+          ) {
+            this.eventBusService.emit(new EventData('logout', null));
+          }
           /* else if (error instanceof HttpErrorResponse
             && !request.url.includes('auth/signin') && error.status === 401) {
             return this.handle401Error(request, next);

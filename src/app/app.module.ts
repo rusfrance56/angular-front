@@ -19,6 +19,9 @@ import {LoginComponent} from './auth/login/login.component';
 import {ProfileComponent} from './auth/profile/profile.component';
 import {AuthInterceptor} from "./auth/auth.interceptor";
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {TaskComponent} from './task/task.component';
+import {TaskListComponent} from './task-list/task-list.component';
+import {NgxPaginationModule} from "ngx-pagination";
 
 @NgModule({
   declarations: [
@@ -32,7 +35,9 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     UserListComponent,
     RegisterComponent,
     LoginComponent,
-    ProfileComponent
+    ProfileComponent,
+    TaskComponent,
+    TaskListComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +47,8 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     AppRoutingModule,
     TranslocoRootModule,
     MatTableModule,
-    NgbModule
+    NgbModule,
+    NgxPaginationModule
   ],
   providers: [
     {

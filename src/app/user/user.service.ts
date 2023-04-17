@@ -28,6 +28,10 @@ export class UserService {
     return this.httpClient.get<User>(this.baseURL + '/' + id);
   }
 
+  getByDepartment(department: string): Observable<User[]>  {
+    return this.httpClient.get<User[]>(this.baseURL + '/byDepartment' + '?department=' + department);
+  }
+
   delete(id: number): Observable<User>  {
     return this.httpClient.delete<User>(this.baseURL + '/' + id);
   }

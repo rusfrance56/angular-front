@@ -86,8 +86,8 @@
     </div>
     <div class="form-floating mb-1">
       <select class="form-control" id="itemDepartment" formControlName="department" >
-        <option *ngFor="let department of departments;">
-          {{department}}
+        <option *ngFor="let department of departments;" [ngValue] = "department">
+          {{t(department)}}
         </option>
       </select>
       <label for="itemDepartment">{{t('DEPARTMENT')}}</label>
