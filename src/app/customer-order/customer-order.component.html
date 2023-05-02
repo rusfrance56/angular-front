@@ -1,0 +1,87 @@
+<ng-container *transloco="let t;">
+  <div class="container col-md-6 card">
+    <h2>{{t('ORDER_INFO')}}</h2>
+    <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
+      <div class="form-floating mb-1">
+        <input type="text" class="form-control" id="name" name="name" formControlName="name"
+               [ngClass]="{ 'is-invalid': isFieldInvalid('name') }">
+        <label for="name" [ngClass]="{ 'invalid-feedback': isFieldInvalid('name') }">
+          {{t('NAME')}}*
+        </label>
+        <div *ngIf="isFieldInvalid('name')" class="invalid-feedback">
+          <div *ngIf="isFieldInvalid('name')">{{ getErrorMessage('name') }}</div>
+        </div>
+      </div>
+      <div class="form-floating mb-1">
+        <input type="text" class="form-control" id="description" name="description" formControlName="description"
+               [ngClass]="{ 'is-invalid': isFieldInvalid('description') }">
+        <label for="description" [ngClass]="{ 'invalid-feedback': isFieldInvalid('description') }">
+          {{t('DESCRIPTION')}}
+        </label>
+        <div *ngIf="isFieldInvalid('description')" class="invalid-feedback">
+          <div *ngIf="isFieldInvalid('description')">{{ getErrorMessage('description') }}</div>
+        </div>
+      </div>
+      <div class="form-floating mb-1">
+        <input type="datetime-local" class="form-control" id="dueDate" name="dueDate" formControlName="dueDate"
+               [ngClass]="{ 'is-invalid': isFieldInvalid('dueDate') }">
+        <label for="dueDate" [ngClass]="{ 'invalid-feedback': isFieldInvalid('dueDate') }">
+          {{t('DUE_DATE')}}
+        </label>
+        <div *ngIf="isFieldInvalid('dueDate')" class="invalid-feedback">
+          <div *ngIf="isFieldInvalid('dueDate')">{{ getErrorMessage('dueDate') }}</div>
+        </div>
+      </div>
+      <div class="form-floating mb-1">
+        <select class="form-control" id="status" formControlName="status">
+          <option *ngFor="let status of statuses;" [ngValue]="status">
+            {{t(status)}}
+          </option>
+        </select>
+        <label for="status">{{t('STATUS')}}</label>
+      </div>
+      <button class="btn btn-success" type="submit">{{t('SAVE')}}</button>
+      <button class="btn btn-primary" type="button" (click)="openItemListModal()">{{t('ADD_ITEMS')}}</button>
+    </form>
+  </div>
+  <div class="container col-md-6 card">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th hidden>Id</th>
+        <th>#</th>
+        <th st-sort="name">{{t('ITEM_NAME')}}</th>
+        <th st-sort="description">{{t('ITEM_DESCRIPTION')}}</th>
+        <th st-sort="price">{{t('ITEM_PRICE')}}</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody ng-show="!isLoading">
+      <tr *ngFor="let item of items;
+                let i = index">
+        <td hidden>{{item.id}}</td>
+        <td>{{i + 1}}</td>
+        <td>{{item.name}}</td>
+        <td>{{item.description}}</td>
+        <td>{{item.price.toFixed(2)}}</td>
+        <td class="col-md-2">
+          <button class="btn btn-danger" (click)="deleteItem(item.id ?? 0)">
+            <svg class="bi" width="16" height="16" fill="currentColor">
+              <use xlink:href="assets/bootstrap-icons.svg#bucket"/>
+            </svg>
+          </button>
+        </td>
+      </tr>
+      </tbody>
+      <tfoot>
+      <tr>
+        <td></td>
+        <td></td>
+        <th class="text-end" ng-if="calculateTotal() != 0">{{t('TOTAL')}}:</th>
+        <th ng-if="calculateTotal() != 0">{{calculateTotal().toFixed(2)}}</th>
+        <td></td>
+      </tr>
+      </tfoot>
+    </table>
+  </div>
+</ng-container>

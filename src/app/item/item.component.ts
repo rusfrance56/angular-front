@@ -14,7 +14,7 @@ import {ValidationService} from "../validation/validation.service";
 })
 export class ItemComponent implements OnInit{
   item: Item;
-  departments;
+  departments: string[];
   submitted = false;
   loading = false;
   isAddMode!: boolean;

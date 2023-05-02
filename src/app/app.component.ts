@@ -4,6 +4,7 @@ import {AuthService} from "./auth/auth.service";
 import {StorageService} from "./auth/storage.service";
 import {EventBusService} from "./auth/event-bus.service";
 import {Subscription} from "rxjs";
+import {Router} from "@angular/router";
 
 export interface Post {
   title: string,
@@ -20,6 +21,11 @@ export enum TaskStatus {
   NEW= "NEW",
   DEPLOYED = "DEPLOYED",
   FINISHED = "FINISHED"
+}
+export enum OrderStatus {
+  CREATED= "CREATED",
+  DEVELOPED = "DEVELOPED",
+  COMPLETE = "COMPLETE"
 }
 export enum TaskPriority {
   HIGH = "HIGH",
@@ -47,7 +53,8 @@ export class AppComponent implements OnInit{
   constructor(private translocoService: TranslocoService,
               private authService: AuthService,
               private storageService: StorageService,
-              private eventBusService: EventBusService) {
+              private eventBusService: EventBusService,
+              private router: Router) {
     this.currentLang = this.translocoService.getActiveLang();
   }
 
@@ -91,12 +98,18 @@ export class AppComponent implements OnInit{
     this.authService.logout().subscribe({
       next: () => {
         this.storageService.clean();
-        window.location.reload();
+        this.navigateLogin();
       },
       error: () => {
         this.storageService.clean();
-        window.location.reload();
+        this.navigateLogin();
       }
+    });
+  }
+
+  navigateLogin() {
+    this.router.navigate(['/login']).then(() => {
+      window.location.reload();
     });
   }
 }

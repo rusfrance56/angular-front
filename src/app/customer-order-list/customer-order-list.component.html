@@ -1,0 +1,57 @@
+<ng-container *transloco="let t;">
+  <h2>{{ t('ORDERS')}}</h2>
+  <div st-table="orders" st-pipe="updateTable">
+    <div id="ordersTable">
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th colspan="4"><input st-search="" class="form-control-sm col-lg-8" placeholder="{{t('SEARCH')}}" type="text"/></th>
+          <th></th>
+          <th>
+            <div class="btn-group-sm inline-row" role="group">
+              <button type="button" class="btn btn-primary" (click)="navigateToCreate()">{{t('CREATE')}}</button>
+            </div>
+          </th>
+        </tr>
+        <tr>
+          <th hidden>Id</th>
+          <th>#</th>
+          <th st-sort="name">{{t('NAME')}}</th>
+          <th st-sort="description">{{t('DESCRIPTION')}}</th>
+          <th st-sort="dueDate">{{t('DUE_DATE')}}</th>
+          <th st-sort="status">{{t('STATUS')}}</th>
+          <th>
+            <select class="form-control-sm" id="ordersByPageDropDown"
+                    ng-options="opt for opt in pagination.availableOptions" ng-model="pagination.ordersPerPage">
+            </select>
+          </th>
+        </tr>
+        </thead>
+        <tbody ng-show="!isLoading">
+        <tr *ngFor="let order of orders; let i = index">
+          <td hidden>{{order.id}}</td>
+          <td>{{i+1}}</td>
+          <td>{{order.name}}</td>
+          <td>{{order.description}}</td>
+          <td>{{order.dueDate | date: 'dd.MM.yyyy HH:mm' }}</td>
+          <td>{{t(order.status)}}</td>
+          <td class="col-md-1">
+            <button class="btn btn-primary" (click)="navigateToEdit(order.id ?? 0)">
+              <svg class="bi" width="16" height="16" fill="currentColor">
+                <use xlink:href="assets/bootstrap-icons.svg#pencil-square"/>
+              </svg>
+            </button>
+            <button class="btn btn-danger" (click)="deleteOrder(order.id ?? 0)">
+              <svg class="bi" width="16" height="16" fill="currentColor">
+                <use xlink:href="assets/bootstrap-icons.svg#bucket"/>
+              </svg>
+            </button>
+          </td>
+        </tr>
+        </tbody>
+        <tfoot>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</ng-container>

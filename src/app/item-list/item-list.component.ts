@@ -3,6 +3,7 @@ import {ItemService} from "../item/item.service";
 import {Item} from "../item/item";
 import {Router} from "@angular/router";
 import {TranslocoService} from "@ngneat/transloco";
+import {Department} from "../app.component";
 
 @Component({
   selector: 'app-item-list',
@@ -12,6 +13,7 @@ import {TranslocoService} from "@ngneat/transloco";
 export class ItemListComponent implements OnInit{
 
   items: Item[];
+  departments: string[];
 
   filter = {
     department: '',
@@ -27,6 +29,7 @@ export class ItemListComponent implements OnInit{
               private router: Router,
               private translocoService: TranslocoService) {
     this.items = [];
+    this.departments = Object.keys(Department);
   }
 
   ngOnInit(): void {

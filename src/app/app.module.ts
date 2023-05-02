@@ -22,6 +22,10 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {TaskComponent} from './task/task.component';
 import {TaskListComponent} from './task-list/task-list.component';
 import {NgxPaginationModule} from "ngx-pagination";
+import {CustomerOrderComponent} from './customer-order/customer-order.component';
+import {CustomerOrderListComponent} from './customer-order-list/customer-order-list.component';
+import {ItemListModalComponent} from './item-list-modal/item-list-modal.component';
+import {MdbModalModule} from 'mdb-angular-ui-kit/modal';
 
 @NgModule({
   declarations: [
@@ -37,7 +41,10 @@ import {NgxPaginationModule} from "ngx-pagination";
     LoginComponent,
     ProfileComponent,
     TaskComponent,
-    TaskListComponent
+    TaskListComponent,
+    CustomerOrderComponent,
+    CustomerOrderListComponent,
+    ItemListModalComponent
   ],
   imports: [
     BrowserModule,
@@ -48,7 +55,8 @@ import {NgxPaginationModule} from "ngx-pagination";
     TranslocoRootModule,
     MatTableModule,
     NgbModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    MdbModalModule
   ],
   providers: [
     {

@@ -15,10 +15,15 @@
             <label for="price">{{t('ITEM_PRICE')}}</label>
           </div>
         </th>
-        <th>
+        <th class="department">
           <div class="form-floating mb-1">
-            <input  type="text" class="form-control" placeholder="{{t('SEARCH')}}"
-                    [(ngModel)]="filter.department" (change)="setFirstPageAndLoad()" id="itemDepartment"/>
+            <select class="form-control" id="itemDepartment" [(ngModel)]="filter.department"
+                    (change)="setFirstPageAndLoad()">
+              <option></option>
+              <option *ngFor="let department of departments;" [ngValue] = "department">
+                {{t(department)}}
+              </option>
+            </select>
             <label for="itemDepartment">{{t('DEPARTMENT')}}</label>
           </div>
         </th>
@@ -34,7 +39,7 @@
         <th st-sort="name">{{t('ITEM_NAME')}}</th>
         <th st-sort="description">{{t('ITEM_DESCRIPTION')}}</th>
         <th st-sort="price">{{t('ITEM_PRICE')}}</th>
-        <th st-sort="department">{{t('DEPARTMENT')}}</th>
+        <th st-sort="department" class="department">{{t('DEPARTMENT')}}</th>
         <th>
          <!-- <select class="form-control-sm" id="itemsByPageDropDown" [(ngModel)]="pageSize" (change)="getItemsPageWithFilter()">
              <option *ngFor="let current of pageSizes">
@@ -57,7 +62,7 @@
         <td>{{item.name}}</td>
         <td>{{item.description}}</td>
         <td>{{item.price.toFixed(2)}}</td>
-        <td>{{t(item.department)}}</td>
+        <td class="department">{{t(item.department)}}</td>
         <td class="col-md-2">
           <button class="btn btn-primary" (click)="navigateToEdit(item.id ?? 0)">
             <svg class="bi" width="16" height="16" fill="currentColor">

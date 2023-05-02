@@ -9,6 +9,8 @@ import {RegisterComponent} from "../auth/register/register.component";
 import {LoginComponent} from "../auth/login/login.component";
 import {TaskListComponent} from "../task-list/task-list.component";
 import {TaskComponent} from "../task/task.component";
+import {CustomerOrderListComponent} from "../customer-order-list/customer-order-list.component";
+import {CustomerOrderComponent} from "../customer-order/customer-order.component";
 
 const routes: Routes = [
 
@@ -27,6 +29,10 @@ const routes: Routes = [
   {path: 'tasks', component: TaskListComponent},
   {path: 'task', component: TaskComponent},
   {path: 'task/:id', component: TaskComponent},
+
+  {path: 'orders', component: CustomerOrderListComponent},
+  {path: 'order', component: CustomerOrderComponent},
+  {path: 'order/:id', component: CustomerOrderComponent},
 
   {path: '', redirectTo: 'items', pathMatch: "full"},
 ];
