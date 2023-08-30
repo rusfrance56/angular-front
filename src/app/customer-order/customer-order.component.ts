@@ -9,8 +9,8 @@ import {first} from "rxjs";
 import {OrderStatus} from "../app.component";
 import {CustomerOrder} from "./customer-order";
 import {CustomerOrderService} from "./customer-order.service";
-import {MdbModalRef, MdbModalService} from "mdb-angular-ui-kit/modal";
 import {ItemListModalComponent} from "../item-list-modal/item-list-modal.component";
+import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-customer-order',
@@ -24,8 +24,7 @@ export class CustomerOrderComponent implements OnInit{
   loading = false;
   isAddMode!: boolean;
   orderForm!: FormGroup;
-
-  itemListModalRef: MdbModalRef<ItemListModalComponent> | null = null;
+  dialogRef: MatDialogRef<ItemListModalComponent> | null;
 
   constructor(private router: Router,
               private activatedRouter: ActivatedRoute,
@@ -34,10 +33,11 @@ export class CustomerOrderComponent implements OnInit{
               private userService: UserService,
               private itemService: ItemService,
               private validationService: ValidationService,
-              private modalService: MdbModalService) {
+              private dialog: MatDialog) {
     this.order = new CustomerOrder();
     this.statuses = Object.keys(OrderStatus);
     this.items = [];
+    this.dialogRef = null;
   }
 
   ngOnInit(): void {
@@ -55,13 +55,6 @@ export class CustomerOrderComponent implements OnInit{
       items: [],
       userId: []
     });
-
-   /* this.userService.getList().subscribe((data) => {
-      this.users = data;
-    });
-    this.itemService.getList().subscribe((data) => {
-      this.items = data;
-    });*/
 
     if (!this.isAddMode) {
       this.orderService.getById(id)
@@ -120,11 +113,6 @@ export class CustomerOrderComponent implements OnInit{
     this.router.navigate(['/orders'], { relativeTo: this.activatedRouter });
   }
 
-  onReset(): void {
-    this.submitted = false;
-    this.orderForm.reset();
-  }
-
   isFieldInvalid(field: string): boolean {
     return this.submitted && this.validationService.isFieldInvalid(this.orderForm, field);
   }
@@ -163,7 +151,18 @@ export class CustomerOrderComponent implements OnInit{
     }
   }
 
-  openItemListModal() {
-    this.itemListModalRef = this.modalService.open(ItemListModalComponent)
+  openModal() {
+    this.dialogRef = this.dialog.open(ItemListModalComponent, {width: '1000px'});
+    this.dialogRef.updatePosition({ top: '3%', left: '20%' });
+    this.dialogRef.componentInstance.saveSelection.subscribe((data: Item[]) => {
+      this.items = this.items.concat(data);
+      this.orderForm.patchValue({
+        items: this.items
+      });
+      console.log('Выбранные элементы:', data);
+      if (this.dialogRef) {
+        this.dialogRef.close();
+      }
+    });
   }
 }

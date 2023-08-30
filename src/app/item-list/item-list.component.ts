@@ -1,16 +1,31 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 import {ItemService} from "../item/item.service";
 import {Item} from "../item/item";
 import {Router} from "@angular/router";
 import {TranslocoService} from "@ngneat/transloco";
 import {Department} from "../app.component";
+import {animate, state, style, transition, trigger} from "@angular/animations";
+import {MatTableDataSource} from "@angular/material/table";
+import {SelectionModel} from '@angular/cdk/collections';
+import {MatPaginator} from "@angular/material/paginator";
+import {MatSort} from "@angular/material/sort";
 
 @Component({
   selector: 'app-item-list',
   templateUrl: './item-list.component.html',
-  styleUrls: ['./item-list.component.css']
+  styleUrls: ['./item-list.component.css'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({height: '0px', minHeight: '0'})),
+      state('expanded', style({height: '*'})),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ])
+  ],
 })
-export class ItemListComponent implements OnInit{
+export class ItemListComponent implements OnInit, AfterViewInit{
+
+  @ViewChild(MatPaginator) paginator: MatPaginator | null;
+  @ViewChild(MatSort) sort: MatSort | null;
 
   items: Item[];
   departments: string[];
@@ -22,23 +37,40 @@ export class ItemListComponent implements OnInit{
   sortField = "updated";
   page = 1;
   count = 0;
-  pageSize = 9;
-  pageSizes = [3, 6, 9];
+  pageSize = 10;
+  pageSizes = [5, 10, 30];
+
+  columnsToDisplayWithExpand = ['select', 'name', 'description', 'price', 'actions'];
+  expandedElement: Item | null;
+  dataSource:MatTableDataSource<Item>;
+  selection = new SelectionModel<Item>(true, []);
+  @Output() saveSelection = new EventEmitter();
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
 
   constructor(private itemService: ItemService,
               private router: Router,
               private translocoService: TranslocoService) {
     this.items = [];
     this.departments = Object.keys(Department);
+    this.expandedElement = null;
+    this.dataSource = new MatTableDataSource<Item>();
+    this.paginator = null;
+    this.sort = null;
   }
 
   ngOnInit(): void {
-    this.getItemsPageWithFilter();
+    // this.getItemsPageWithFilter();
+    this.getItems();
   }
 
   private getItems() {
     this.itemService.getList().subscribe(data => {
       this.items = data;
+      this.dataSource.data = data;
     });
   }
 
@@ -47,6 +79,7 @@ export class ItemListComponent implements OnInit{
     this.itemService.findPageByFilter(requestParams).subscribe(data => {
       this.count = data.totalElements;
       this.items = data.content;
+      this.dataSource = data.content;
     });
   }
 
@@ -88,13 +121,21 @@ export class ItemListComponent implements OnInit{
     return params;
   }
 
-  handlePageChange(event: number): void {
-    this.page = event;
-    this.getItemsPageWithFilter();
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
   }
 
-  setFirstPageAndLoad(): void {
-    this.page = 1;
-    this.getItemsPageWithFilter();
+  toggleAllRows() {
+    if (this.isAllSelected()) {
+      this.selection.clear();
+      return;
+    }
+    this.selection.select(...this.dataSource.data);
+  }
+
+  addSelected() {
+    this.saveSelection.emit(this.selection.selected);
   }
 }

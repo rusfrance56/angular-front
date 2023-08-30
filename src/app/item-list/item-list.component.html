@@ -1,6 +1,6 @@
 <ng-container *transloco="let t;">
 <h2>{{ t('ITEMS', { value: 'Transloco' }) }}</h2>
-<div st-table="items" st-pipe="updateTable">
+<!--<div st-table="items" st-pipe="updateTable">
   <div id="itemsTable">
     <table class="table table-striped">
       <thead>
@@ -41,11 +41,11 @@
         <th st-sort="price">{{t('ITEM_PRICE')}}</th>
         <th st-sort="department" class="department">{{t('DEPARTMENT')}}</th>
         <th>
-         <!-- <select class="form-control-sm" id="itemsByPageDropDown" [(ngModel)]="pageSize" (change)="getItemsPageWithFilter()">
+         &lt;!&ndash; <select class="form-control-sm" id="itemsByPageDropDown" [(ngModel)]="pageSize" (change)="getItemsPageWithFilter()">
              <option *ngFor="let current of pageSizes">
                {{current}}
              </option>
-          </select>-->
+          </select>&ndash;&gt;
         </th>
       </tr>
       </thead>
@@ -57,7 +57,7 @@
                 };
                 let i = index">
         <td hidden>{{item.id}}</td>
-<!--        <td>{{pagination.from+$index+1}}</td>-->
+&lt;!&ndash;        <td>{{pagination.from+$index+1}}</td>&ndash;&gt;
         <td>{{i+1}}</td>
         <td>{{item.name}}</td>
         <td>{{item.description}}</td>
@@ -69,7 +69,7 @@
               <use xlink:href="assets/bootstrap-icons.svg#pencil-square"/>
             </svg>
           </button>
-<!--          todo не будет работать удаление, так как на беке требует права записи для этого-->
+&lt;!&ndash;          todo не будет работать удаление, так как на беке требует права записи для этого&ndash;&gt;
           <button class="btn btn-danger" (click)="deleteItem(item.id ?? 0)">
             <svg class="bi" width="16" height="16" fill="currentColor">
               <use xlink:href="assets/bootstrap-icons.svg#bucket"/>
@@ -87,7 +87,7 @@
               nextLabel="{{t('NEXT')}}"
               [responsive]="true"
               (pageChange)="handlePageChange($event)"
-            ></pagination-controls><!--(pageBoundsCorrection)="handlePageOutOfBound($event)"-->
+            ></pagination-controls>&lt;!&ndash;(pageBoundsCorrection)="handlePageOutOfBound($event)"&ndash;&gt;
           </div>
         </td>
         <td>
@@ -109,7 +109,7 @@
       </tfoot>
     </table>
   </div>
-  <!--<div id="itemsGrid">
+  &lt;!&ndash;<div id="itemsGrid">
     <div *ngFor="let item in items">
       <div class="itemGridElement col-md-3" style="height: 300px">
         <div class="height-100" style="border: solid red; padding: 15px">&lt;!&ndash; &ndash;&gt;
@@ -132,6 +132,105 @@
         </div>
       </div>
     </div>
-  </div>-->
-</div>
+  </div>&ndash;&gt;
+</div>-->
+  <div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort>
+      <ng-container matColumnDef="select">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                        [checked]="selection.hasValue() && isAllSelected()"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()">
+          </mat-checkbox>
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <mat-checkbox (click)="$event.stopPropagation()"
+                        (change)="$event ? selection.toggle(row) : null"
+                        [checked]="selection.isSelected(row)">
+          </mat-checkbox>
+        </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      </ng-container>
+
+      <!-- Description Column -->
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
+        <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+      </ng-container>
+
+      <!-- Price Column -->
+      <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Price </th>
+        <td mat-cell *matCellDef="let element"> {{element.price}} </td>
+      </ng-container>
+
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+          <button class="btn btn-primary" (click)="navigateToEdit(element.id ?? 0)">
+            <svg class="bi" width="16" height="16" fill="currentColor">
+              <use xlink:href="assets/bootstrap-icons.svg#pencil-square"/>
+            </svg>
+          </button>
+          <button class="btn btn-danger" (click)="deleteItem(element.id ?? 0)">
+            <svg class="bi" width="16" height="16" fill="currentColor">
+              <use xlink:href="assets/bootstrap-icons.svg#bucket"/>
+            </svg>
+          </button>
+          <button class="btn btn-info" aria-label="expand row"
+                  (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
+            <svg class="bi" width="16" height="16" fill="currentColor" *ngIf="expandedElement !== element">
+              <use xlink:href="assets/bootstrap-icons.svg#arrow-bar-down"/>
+            </svg>
+            <svg class="bi" width="16" height="16" fill="currentColor" *ngIf="expandedElement === element">
+              <use xlink:href="assets/bootstrap-icons.svg#arrow-bar-up"/>
+            </svg>
+          </button>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="expandedDetail">
+        <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
+          <div class="example-element-detail"
+               [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+            <div class="example-element-diagram">
+              <div class="example-element-position"> {{element.name}} </div>
+            </div>
+            <div class="example-element-description">
+              {{element.description}}
+              <div class="example-element-name"> {{t(element.department)}} </div>
+              <div class="example-element-symbol"> {{element.price}} </div>
+            </div>
+          </div>
+        </td>
+      </ng-container>
+
+  <!--    <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>-->
+     <!-- <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;"
+          class="example-element-row"
+          [class.example-expanded-row]="expandedElement === element"
+          (click)="expandedElement = expandedElement === element ? null : element">
+      </tr>-->
+      <tr mat-row *matRowDef="let row; columns: columnsToDisplayWithExpand;"
+          (click)="selection.toggle(row)">
+      </tr>
+      <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+    </table>
+  </div>
+  <mat-paginator [pageSizeOptions]="pageSizes"
+                 [showFirstLastButtons]="true"
+                 [pageSize]="pageSize"
+                 [pageIndex]="page">
+
+  </mat-paginator>
 </ng-container>
+<div>
+  <button class="btn btn-primary" (click)="addSelected()">Add Items to Order</button>
+</div>

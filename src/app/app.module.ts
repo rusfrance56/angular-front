@@ -11,7 +11,6 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {AppRoutingModule} from "./routing/app-routing.module";
 import {StyleDirective} from "./directives/style.directive";
 import {TranslocoRootModule} from './transloco-root.module';
-import {MatTableModule} from "@angular/material/table";
 import {UserComponent} from './user/user.component';
 import {UserListComponent} from './user-list/user-list.component';
 import {RegisterComponent} from './auth/register/register.component';
@@ -21,11 +20,12 @@ import {AuthInterceptor} from "./auth/auth.interceptor";
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {TaskComponent} from './task/task.component';
 import {TaskListComponent} from './task-list/task-list.component';
-import {NgxPaginationModule} from "ngx-pagination";
 import {CustomerOrderComponent} from './customer-order/customer-order.component';
 import {CustomerOrderListComponent} from './customer-order-list/customer-order-list.component';
 import {ItemListModalComponent} from './item-list-modal/item-list-modal.component';
-import {MdbModalModule} from 'mdb-angular-ui-kit/modal';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {DialogModule} from '@angular/cdk/dialog';
+import {MaterialModule} from "./material.module";
 
 @NgModule({
   declarations: [
@@ -47,16 +47,17 @@ import {MdbModalModule} from 'mdb-angular-ui-kit/modal';
     ItemListModalComponent
   ],
   imports: [
+    BrowserAnimationsModule,
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
     AppRoutingModule,
     TranslocoRootModule,
-    MatTableModule,
+    // NoopAnimationsModule,
+    DialogModule,
     NgbModule,
-    NgxPaginationModule,
-    MdbModalModule
+    MaterialModule
   ],
   providers: [
     {
