@@ -22,6 +22,7 @@
   "CREATE": "Create",
   "INFO": "Info",
   "DELETE": "Delete",
+  "EDIT": "Edit",
   "SAVE": "Save",
   "ENTER_USER_NAME": "Enter a username",
   "ENTER_PASSWORD": "Enter a password",

@@ -56,7 +56,7 @@ export class ItemComponent implements OnInit{
   }
 
   onSubmit() {
-    console.log(this.itemForm);
+    // console.log(this.itemForm);
     this.submitted = true;
     if (this.itemForm.invalid) {
       return;

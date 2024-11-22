@@ -108,6 +108,8 @@ export class ItemListComponent implements OnInit, AfterViewInit{
     }
     if (this.sortField) {
       params[`sort`] = this.sortField;
+    } else {
+      params[`sort`] = 'updated';
     }
     if (this.page) {
       params[`page`] = this.page - 1;
@@ -123,7 +125,7 @@ export class ItemListComponent implements OnInit, AfterViewInit{
 
   isAllSelected() {
     const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data.length;
+    const numRows = this.dataSource.data && this.dataSource.data.length;
     return numSelected === numRows;
   }
 
