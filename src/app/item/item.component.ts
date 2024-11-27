@@ -3,16 +3,17 @@ import {Item} from "./item";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ItemService} from "./item.service";
 import {Department} from "../app.component";
-import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {first} from "rxjs";
 import {ValidationService} from "../validation/validation.service";
+import {FileUploadService} from "../services/file-upload.service";
 
 @Component({
   selector: 'app-item',
   templateUrl: './item.component.html',
   styleUrls: ['./item.component.css']
 })
-export class ItemComponent implements OnInit{
+export class ItemComponent implements OnInit {
   item: Item;
   departments: string[];
   submitted = false;
@@ -24,7 +25,9 @@ export class ItemComponent implements OnInit{
               private activatedRouter: ActivatedRoute,
               private formBuilder: FormBuilder,
               private itemService: ItemService,
-              private validationService: ValidationService) {
+              private validationService: ValidationService,
+              private fileUploadService: FileUploadService
+  ) {
     this.item = new Item();
     this.departments = Object.keys(Department);
   }
@@ -46,6 +49,8 @@ export class ItemComponent implements OnInit{
         Validators.required,
         Validators.pattern(/^([0-9]*)([.][0-9]{1,2})?$/)
       ]],
+      image: new FormControl(null),
+      imageUrl: new FormControl<string | Blob>('')
     });
 
     if (!this.isAddMode) {
@@ -61,13 +66,14 @@ export class ItemComponent implements OnInit{
     if (this.itemForm.invalid) {
       return;
     }
+    this.saveImages();
 
     this.loading = true;
-    if (this.isAddMode) {
-      this.createItem();
-    } else {
-      this.updateItem();
-    }
+    /* if (this.isAddMode) {
+       this.createItem();
+     } else {
+       this.updateItem();
+     }*/
   }
 
   private createItem() {
@@ -92,8 +98,24 @@ export class ItemComponent implements OnInit{
       .add(() => this.loading = false);
   }
 
+  private saveImages() {
+    let image = this.itemForm.controls['image'].value;
+    if (image) {
+      let imageArray = [image];
+      imageArray.forEach(() => {
+        this.fileUploadService.saveFile(image).subscribe(stringResponse => {
+          // this.itemForm.patchValue({imageUrl: stringResponse.response});
+          this.fileUploadService.getFileByName(stringResponse.response).subscribe(file => {
+            const url = window.URL.createObjectURL(file);
+            this.itemForm.patchValue({imageUrl: url});
+          });
+        });
+      });
+    }
+  }
+
   private goToItemList() {
-    this.router.navigate(['/items'], { relativeTo: this.activatedRouter });
+    this.router.navigate(['/items'], {relativeTo: this.activatedRouter});
   }
 
   onReset(): void {
@@ -113,4 +135,17 @@ export class ItemComponent implements OnInit{
     return this.validationService.getErrorMessage(this.itemForm, field, 'item');
   }
 
+  protected onImageSelected(event: Event) {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (file) {
+      this.itemForm.patchValue({image: file});
+      this.itemForm.patchValue({imageUrl: URL.createObjectURL(file)});
+    }
+  }
+
+  protected getImageFullUrl() {
+    // @ts-ignore
+    let itemValue = this.itemForm.controls.imageUrl.value;
+    return itemValue || null;
+  }
 }
