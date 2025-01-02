@@ -9,6 +9,9 @@ import {MatTableDataSource} from "@angular/material/table";
 import {SelectionModel} from '@angular/cdk/collections';
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
+import {FileUploadService} from "../services/file-upload.service";
+import {map} from "rxjs/operators";
+import {forkJoin} from "rxjs";
 
 @Component({
   selector: 'app-item-list',
@@ -46,6 +49,12 @@ export class ItemListComponent implements OnInit, AfterViewInit{
   selection = new SelectionModel<Item>(true, []);
   @Output() saveSelection = new EventEmitter();
 
+  displayAsGrid: boolean = false;
+
+  toggleDisplayMode() {
+    this.displayAsGrid = !this.displayAsGrid;
+  }
+
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
@@ -53,7 +62,8 @@ export class ItemListComponent implements OnInit, AfterViewInit{
 
   constructor(private itemService: ItemService,
               private router: Router,
-              private translocoService: TranslocoService) {
+              private translocoService: TranslocoService,
+              private fileUploadService: FileUploadService) {
     this.items = [];
     this.departments = Object.keys(Department);
     this.expandedElement = null;
@@ -71,6 +81,30 @@ export class ItemListComponent implements OnInit, AfterViewInit{
     this.itemService.getList().subscribe(data => {
       this.items = data;
       this.dataSource.data = data;
+      this.loadImagesForItems();
+    });
+  }
+
+  private loadImagesForItems() {
+    const requests = [];
+
+    for (const item of this.items) {
+      let itemImageNames = item.imageNames;
+      item.imageUrls = [];
+      item.images = [];
+
+      for (const imgName of itemImageNames) {
+        const request = this.fileUploadService.getFileByName(imgName).pipe(
+          map(file => {
+            item.imageUrls.push(window.URL.createObjectURL(file));
+            item.images.push(file);
+          })
+        );
+        requests.push(request);
+      }
+    }
+    forkJoin(requests).subscribe(() => {
+      console.log('Все изображения загружены');
     });
   }
 

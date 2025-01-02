@@ -77,6 +77,9 @@
   "PREV": "Пред",
   "NEXT": "След",
   "ADD_ITEMS": "Добавить товары",
+  "CURRENCY": "RUB",
+  "DISPLAY_TABLE": "Таблица",
+  "DISPLAY_GRID": "Сетка",
 
   "--VALIDATIONS AND EXCEPTIONS--": "",
   "item.name.required": "Название не может быть пустым",

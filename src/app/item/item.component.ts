@@ -3,8 +3,8 @@ import {Item} from "./item";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ItemService} from "./item.service";
 import {Department} from "../app.component";
-import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {first} from "rxjs";
+import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {first, firstValueFrom} from "rxjs";
 import {ValidationService} from "../validation/validation.service";
 import {FileUploadService} from "../services/file-upload.service";
 
@@ -49,31 +49,91 @@ export class ItemComponent implements OnInit {
         Validators.required,
         Validators.pattern(/^([0-9]*)([.][0-9]{1,2})?$/)
       ]],
-      image: new FormControl(null),
-      imageUrl: new FormControl<string | Blob>('')
+      images: this.formBuilder.array<Blob>([]),
+      imageUrls: this.formBuilder.array<string>([]),
+      imageNames: this.formBuilder.array<string>([])
+      // image: new FormControl(null),
+      // imageUrl: new FormControl<string | Blob>('')
     });
 
     if (!this.isAddMode) {
       this.itemService.getById(id)
         .pipe(first())
-        .subscribe(x => this.itemForm.patchValue(x));
+        .subscribe(x => {
+          this.itemForm.patchValue(x);
+
+          //   TODO как будто бы тут нужно загружать массивы ссылок и картинок как FormControl
+          let imageNames = x.imageNames;
+          for (const image of imageNames) {
+            this.fileUploadService.getFileByName(image).subscribe(file => {
+              // this.images.value.push(file);
+              this.imageUrls.value.push(window.URL.createObjectURL(file));
+
+              const imgControl = this.formBuilder.control(file, Validators.required);
+              this.images.push(imgControl);
+            });
+          }
+        });
     }
   }
 
-  onSubmit() {
+  protected onImageSelected(event: Event) {
+    const fileInput = event.target as HTMLInputElement;
+    if (fileInput.files && fileInput.files.length) {
+      for (let i = 0; i < fileInput.files.length; i++) {
+        const file = fileInput.files[i];
+        if (file) {
+          this.images.value.push(file);
+          this.imageUrls.value.push(URL.createObjectURL(file));
+
+          /*const reader = new FileReader();
+          reader.onload = () => {
+            const imgBlob = new Blob([reader.result as ArrayBuffer], { type: file.type });
+            const imgControl = this.formBuilder.control(imgBlob, Validators.required);
+            this.images.push(imgControl);
+            this.imageUrls.push(URL.createObjectURL(file));
+          };
+          reader.readAsArrayBuffer(file);*/
+        }
+      }
+    }
+  }
+
+  async onSubmit() {
     // console.log(this.itemForm);
     this.submitted = true;
     if (this.itemForm.invalid) {
       return;
     }
-    this.saveImages();
+    await this.saveImages();
 
     this.loading = true;
-    /* if (this.isAddMode) {
-       this.createItem();
-     } else {
-       this.updateItem();
-     }*/
+    if (this.isAddMode) {
+      this.createItem();
+    } else {
+      this.updateItem();
+    }
+  }
+
+  saveImages(): Promise<void> {
+    return new Promise<void>(async (resolve, reject) => {
+      let imageArr = this.itemForm.controls['images'].value;
+      if (imageArr && imageArr.length > 0) {
+        try {
+          for (const image of imageArr) {
+            const stringResponse = await firstValueFrom(this.fileUploadService.saveFile(image));
+            this.imageNames.value.push(stringResponse.response);
+            /* this.fileUploadService.getFileByName(stringResponse.response).subscribe(file => {
+              this.images.value.push(window.URL.createObjectURL(file));
+             });*/
+          }
+          resolve();
+        } catch (error) {
+          reject(error);
+        }
+      }
+      resolve();
+    });
   }
 
   private createItem() {
@@ -98,20 +158,16 @@ export class ItemComponent implements OnInit {
       .add(() => this.loading = false);
   }
 
-  private saveImages() {
-    let image = this.itemForm.controls['image'].value;
-    if (image) {
-      let imageArray = [image];
-      imageArray.forEach(() => {
-        this.fileUploadService.saveFile(image).subscribe(stringResponse => {
-          // this.itemForm.patchValue({imageUrl: stringResponse.response});
-          this.fileUploadService.getFileByName(stringResponse.response).subscribe(file => {
-            const url = window.URL.createObjectURL(file);
-            this.itemForm.patchValue({imageUrl: url});
-          });
-        });
-      });
-    }
+  get images(): FormArray {
+    return this.itemForm.get('images') as FormArray;
+  }
+
+  get imageUrls(): FormArray {
+    return this.itemForm.get('imageUrls') as FormArray;
+  }
+
+  get imageNames(): FormArray {
+    return this.itemForm.get('imageNames') as FormArray;
   }
 
   private goToItemList() {
@@ -133,14 +189,6 @@ export class ItemComponent implements OnInit {
 
   getErrorMessage(field: string): string {
     return this.validationService.getErrorMessage(this.itemForm, field, 'item');
-  }
-
-  protected onImageSelected(event: Event) {
-    const file = (event.target as HTMLInputElement).files?.[0];
-    if (file) {
-      this.itemForm.patchValue({image: file});
-      this.itemForm.patchValue({imageUrl: URL.createObjectURL(file)});
-    }
   }
 
   protected getImageFullUrl() {

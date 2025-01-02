@@ -1,0 +1,8 @@
+.carousel-indicators button {
+  border: 2px black solid;
+}
+
+.carousel-control-next-icon,
+.carousel-control-prev-icon {
+  filter: invert(1);
+}

@@ -63,13 +63,13 @@
 <ng-container *transloco="let t;">
   <div class="row">
     <div class="container col-md-6 card">
-      <h2>{{t('ITEM_INFO')}}</h2>
+      <h2>{{ t('ITEM_INFO') }}</h2>
       <form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
         <div class="form-floating mb-1">
           <input type="text" class="form-control" id="itemName" name="itemName" formControlName="name"
                  [ngClass]="{ 'is-invalid': isFieldInvalid('name') }">
           <label for="itemName" [ngClass]="{ 'invalid-feedback': isFieldInvalid('name') }">
-            {{t('ITEM_NAME')}}*
+            {{ t('ITEM_NAME') }}*
           </label>
           <div *ngIf="isFieldInvalid('name')" class="invalid-feedback">
             <div *ngIf="isFieldInvalid('name')">{{ getErrorMessage('name') }}</div>
@@ -80,7 +80,7 @@
                  formControlName="description"
                  [ngClass]="{ 'is-invalid': isFieldInvalid('description') }">
           <label for="itemDescription" [ngClass]="{ 'invalid-feedback': isFieldInvalid('description') }">
-            {{t('ITEM_DESCRIPTION')}}
+            {{ t('ITEM_DESCRIPTION') }}
           </label>
           <div *ngIf="isFieldInvalid('description')" class="invalid-feedback">
             <div *ngIf="isFieldInvalid('description')">{{ getErrorMessage('description') }}</div>
@@ -89,22 +89,22 @@
         <div class="form-floating mb-1">
           <select class="form-control" id="itemDepartment" formControlName="department">
             <option *ngFor="let department of departments;" [ngValue]="department">
-              {{t(department)}}
+              {{ t(department) }}
             </option>
           </select>
-          <label for="itemDepartment">{{t('DEPARTMENT')}}</label>
+          <label for="itemDepartment">{{ t('DEPARTMENT') }}</label>
         </div>
         <div class="form-floating mb-1">
           <input type="number" class="form-control" id="itemPrice" formControlName="price"
                  [ngClass]="{ 'is-invalid': isFieldInvalid('price') }">
           <label for="itemPrice" [ngClass]="{ 'invalid-feedback': isFieldInvalid('price') }">
-            {{t('ITEM_PRICE')}}*
+            {{ t('ITEM_PRICE') }}*
           </label>
           <div *ngIf="isFieldInvalid('price')" class="invalid-feedback">
             <div *ngIf="isFieldInvalid('price')">{{ getErrorMessage('price') }}</div>
           </div>
         </div>
-        <button class="btn btn-success" type="submit">{{t('SAVE')}}</button>
+        <button class="btn btn-success" type="submit">{{ t('SAVE') }}</button>
         <!-- [disabled]="!itemForm.valid"-->
       </form>
 
@@ -112,11 +112,14 @@
     <div class="container col-md-6 card">
       <div class="container">
         <div class="form-floating mb-1">
-          <input #fileInput type="file" accept="image/*" (change)="onImageSelected($event)"/>
+          <input #fileInput type="file" accept="image/*" (change)="onImageSelected($event)" multiple/>
         </div>
+        <!--<div *ngFor="let img of imageUrls.value; let i = index">
+          <img [src]="img ? img : ''" alt="Uploaded Image"
+               style="width: 100px;height: 100px;margin:auto;"/>
+        </div>-->
 
-        <img [src]="getImageFullUrl()" *ngIf="getImageFullUrl()" alt="image"
-             style="width: 400px;height: 300px;margin:auto;"/>
+        <app-image-carousel [imageNames]="imageUrls.value" [autoRide] = true></app-image-carousel>
       </div>
     </div>
   </div>

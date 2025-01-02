@@ -53,3 +53,99 @@ tr.example-element-row:not(.example-expanded-row):active {
 .scroll-container {
   overflow-x: scroll;
 }
+
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 16px; /* Отступы между элементами сетки */
+  padding: 16px; /* Внешний отступ для контейнера */
+}
+
+.grid-item {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Улучшенная тень */
+  overflow: hidden;
+  transition: transform 0.2s;
+  position: relative;
+  display: flex;
+  flex-direction: column; /* Вертикальное выравнивание */
+  justify-content: space-between; /* Упаковка для равномерного распределения */
+  height: 420px; /* Фиксированная высота для всех ячеек */
+  text-align: center; /* Центрирование текста */
+}
+
+.grid-item:hover {
+  transform: translateY(-5px); /* Подъем элемента при наведении */
+}
+
+.image-container {
+  width: 100%;
+  height: 200px; /* Фиксированная высота для всех изображений */
+  overflow: hidden;
+  border-bottom: 4px solid #007BFF; /* Нижняя граница картинки */
+}
+
+.image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Заполнение по размеру */
+  transition: transform 0.3s; /* Плавный эффект увеличения */
+}
+
+.grid-item:hover .image-container img {
+  transform: scale(1.1); /* Увеличение изображения при наведении */
+}
+
+.item-content {
+  padding: 16px; /* Отступы для содержимого */
+  flex-grow: 1; /* Занимает всё доступное пространство */
+  display: flex;
+  flex-direction: column; /* Вертикальное выравнивание содержимого */
+  justify-content: space-between; /* Равномерное распределение элементов */
+}
+
+.item-title {
+  font-size: 1.2em; /* Увеличенный размер для названия продукта */
+  margin: 10px 0; /* Отступы для названия */
+  font-weight: bold; /* Жирный шрифт для названия */
+}
+
+.item-description {
+  color: #555; /* Цвет описания */
+  font-size: 0.9em; /* Размер шрифта для описания */
+  margin-bottom: 10px; /* Небольшой отступ снизу */
+  overflow: hidden; /* Скрыть излишек текста */
+  text-overflow: ellipsis; /* Многоточие для длинного текста */
+  display: -webkit-box; /* Для обеспечения поддержки многоточия в Safari */
+  -webkit-box-orient: vertical; /* Вертикальная ориентация */
+  -webkit-line-clamp: 3; /* Ограничение по количеству строк (можно изменить) */
+}
+
+.item-price {
+  font-size: 1.1em; /* Размер шрифта для цены */
+  margin: 8px 0; /* Отступы для цены */
+  color: #007BFF; /* Цвет для цены */
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between; /* Разделение кнопок */
+  padding: 10px;
+}
+
+/*.btn {
+  background-color: #007BFF; !* Цвет кнопок *!
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 0.9em; !* Размер шрифта для кнопок *!
+}
+
+.btn:hover {
+  background-color: #0056b3; !* Темнее при наведении *!
+}*/

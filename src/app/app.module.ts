@@ -26,6 +26,7 @@ import {ItemListModalComponent} from './item-list-modal/item-list-modal.componen
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {DialogModule} from '@angular/cdk/dialog';
 import {MaterialModule} from "./material.module";
+import {ImageCarouselComponent} from './image-carousel/image-carousel.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import {MaterialModule} from "./material.module";
     TaskListComponent,
     CustomerOrderComponent,
     CustomerOrderListComponent,
-    ItemListModalComponent
+    ItemListModalComponent,
+    ImageCarouselComponent
   ],
   imports: [
     BrowserAnimationsModule,

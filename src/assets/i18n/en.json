@@ -77,6 +77,9 @@
   "PREV": "Prev",
   "NEXT": "Next",
   "ADD_ITEMS": "Add items",
+  "CURRENCY": "RUB",
+  "DISPLAY_TABLE": "Table",
+  "DISPLAY_GRID": "Grid",
 
   "--VALIDATIONS AND EXCEPTIONS--": "",
   "item.name.required": "Name is required",
