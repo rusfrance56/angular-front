@@ -107,7 +107,7 @@
             <h3 class="item-title">{{ element.name }}</h3>
             <app-image-carousel [imageNames]="element.imageUrls"></app-image-carousel>
             <p class="item-description">{{ element.description }}</p>
-            <p class="item-price">{{ element.price }} {{ t('CURRENCY') }}</p>
+            <p class="item-price">{{ element.price.toFixed(2)}} {{ t('CURRENCY') }}</p>
             <div class="actions">
               <button class="btn" (click)="navigateToEdit(element.id ?? 0)">{{ t('EDIT') }}</button>
               <button class="btn" (click)="deleteItem(element.id ?? 0)">{{ t('DELETE') }}</button>
