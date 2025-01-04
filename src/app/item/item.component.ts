@@ -52,8 +52,6 @@ export class ItemComponent implements OnInit {
       images: this.formBuilder.array<Blob>([]),
       imageUrls: this.formBuilder.array<string>([]),
       imageNames: this.formBuilder.array<string>([])
-      // image: new FormControl(null),
-      // imageUrl: new FormControl<string | Blob>('')
     });
 
     if (!this.isAddMode) {
@@ -80,20 +78,14 @@ export class ItemComponent implements OnInit {
   protected onImageSelected(event: Event) {
     const fileInput = event.target as HTMLInputElement;
     if (fileInput.files && fileInput.files.length) {
+      this.images.clear();
+      this.imageUrls.reset();
+      this.imageNames.reset();
       for (let i = 0; i < fileInput.files.length; i++) {
         const file = fileInput.files[i];
         if (file) {
           this.images.value.push(file);
           this.imageUrls.value.push(URL.createObjectURL(file));
-
-          /*const reader = new FileReader();
-          reader.onload = () => {
-            const imgBlob = new Blob([reader.result as ArrayBuffer], { type: file.type });
-            const imgControl = this.formBuilder.control(imgBlob, Validators.required);
-            this.images.push(imgControl);
-            this.imageUrls.push(URL.createObjectURL(file));
-          };
-          reader.readAsArrayBuffer(file);*/
         }
       }
     }

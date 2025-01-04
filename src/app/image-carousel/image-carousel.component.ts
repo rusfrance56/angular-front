@@ -24,4 +24,10 @@ export class ImageCarouselComponent {
     }
     return result;
   }
+
+  removeImage(index: number): void {
+    if (index > -1 && index < this.imageNames.length) {
+      this.imageNames.splice(index, 1);
+    }
+  }
 }

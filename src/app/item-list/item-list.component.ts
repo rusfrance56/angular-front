@@ -119,7 +119,7 @@ export class ItemListComponent implements OnInit, AfterViewInit{
 
   deleteItem(id: number) {
     this.itemService.delete(id).subscribe(() => {
-      this.getItemsPageWithFilter();
+      this.getItems();
     });
   }
 
