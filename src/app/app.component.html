@@ -42,7 +42,7 @@
                 {{t('ITEMS')}}
               </a>
             </li>
-            <li>
+            <li *ngIf="isAdmin()">
               <a class="nav-link text-white" routerLink="users">
                 <svg class="bi d-block mx-auto mb-1" width="24" height="24" fill="currentColor">
                   <use xlink:href="assets/bootstrap-icons.svg#person-circle"></use>

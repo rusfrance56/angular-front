@@ -12,6 +12,7 @@ import {MatSort} from "@angular/material/sort";
 import {FileUploadService} from "../services/file-upload.service";
 import {map} from "rxjs/operators";
 import {forkJoin} from "rxjs";
+import {UserService} from "../user/user.service";
 
 @Component({
   selector: 'app-item-list',
@@ -49,7 +50,7 @@ export class ItemListComponent implements OnInit, AfterViewInit{
   selection = new SelectionModel<Item>(true, []);
   @Output() saveSelection = new EventEmitter();
 
-  displayAsGrid: boolean = false;
+  displayAsGrid: boolean = true;
 
   toggleDisplayMode() {
     this.displayAsGrid = !this.displayAsGrid;
@@ -63,7 +64,8 @@ export class ItemListComponent implements OnInit, AfterViewInit{
   constructor(private itemService: ItemService,
               private router: Router,
               private translocoService: TranslocoService,
-              private fileUploadService: FileUploadService) {
+              private fileUploadService: FileUploadService,
+              private userService: UserService) {
     this.items = [];
     this.departments = Object.keys(Department);
     this.expandedElement = null;
@@ -173,5 +175,9 @@ export class ItemListComponent implements OnInit, AfterViewInit{
 
   addSelected() {
     this.saveSelection.emit(this.selection.selected);
+  }
+
+  isAdmin() {
+    return this.userService.isAdmin();
   }
 }

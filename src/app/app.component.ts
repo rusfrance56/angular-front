@@ -5,6 +5,7 @@ import {StorageService} from "./auth/storage.service";
 import {EventBusService} from "./auth/event-bus.service";
 import {Subscription} from "rxjs";
 import {Router} from "@angular/router";
+import {UserService} from "./user/user.service";
 
 export interface Post {
   title: string,
@@ -54,7 +55,8 @@ export class AppComponent implements OnInit{
               private authService: AuthService,
               private storageService: StorageService,
               private eventBusService: EventBusService,
-              private router: Router) {
+              private router: Router,
+              private userService: UserService) {
     this.currentLang = this.translocoService.getActiveLang();
   }
 
@@ -64,16 +66,6 @@ export class AppComponent implements OnInit{
     } else {
       this.translocoService.setActiveLang('en');
     }
-    /*switch (lang) {
-      case 'Ru':
-        this.translocoService.setActiveLang('Ru');
-        break;
-      case 'En':
-        this.translocoService.setActiveLang('En');
-        break;
-      default:
-        this.translocoService.setActiveLang('En');
-    }*/
     this.currentLang = this.translocoService.getActiveLang();
   }
 
@@ -111,5 +103,9 @@ export class AppComponent implements OnInit{
     this.router.navigate(['/login']).then(() => {
       window.location.reload();
     });
+  }
+
+  isAdmin() {
+    return this.userService.isAdmin();
   }
 }

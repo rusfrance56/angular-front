@@ -2,9 +2,7 @@ import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
-import {PostComponent} from "./post/post.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {PostFormComponent} from './post-form/post-form.component';
 import {ItemComponent} from './item/item.component';
 import {ItemListComponent} from './item-list/item-list.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
@@ -31,8 +29,6 @@ import {ImageCarouselComponent} from './image-carousel/image-carousel.component'
 @NgModule({
   declarations: [
     AppComponent,
-    PostComponent,
-    PostFormComponent,
     ItemComponent,
     ItemListComponent,
     StyleDirective,

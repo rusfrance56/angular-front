@@ -1,6 +1,6 @@
 <ng-container *transloco="let t;">
 <h2>{{ t('ITEMS', { value: 'Transloco' }) }}</h2>
-  <button (click)="toggleDisplayMode()" class="btn btn-secondary">
+  <button *ngIf="isAdmin()" (click)="toggleDisplayMode()" class="btn btn-secondary">
     {{ displayAsGrid ? t('DISPLAY_TABLE') : t('DISPLAY_GRID') }}
   </button>
     <ng-container *ngIf="!displayAsGrid; else gridView">
@@ -109,7 +109,7 @@
               {{ element.description | slice:0:30 }}{{ element.description.length > 30 ? '...' : '' }}
             </p>
             <p class="item-price">{{ element.price.toFixed(2)}} {{ t('CURRENCY') }}</p>
-            <div class="actions">
+            <div *ngIf="isAdmin()" class="actions">
               <button class="btn" (click)="navigateToEdit(element.id ?? 0)">{{ t('EDIT') }}</button>
               <button class="btn" (click)="deleteItem(element.id ?? 0)">{{ t('DELETE') }}</button>
             </div>
